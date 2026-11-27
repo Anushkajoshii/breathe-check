@@ -15,7 +15,7 @@ Extras:
 
 - **Cigarette equivalent**: today's air turned into "like smoking N cigarettes", so the numbers mean something.
 - **Stubble-smoke check**: NASA fire counts in Punjab and Haryana plus wind direction answer "is crop-fire smoke blowing into Delhi today?"
-- **Daily Telegram alert**: tomorrow's best run window for your city, every evening.
+- **Run-window calendar**: add one link to Google or Apple Calendar, and every evening it puts tomorrow's best 2-hour run window in your calendar, with the AQI. No app, no sign-up, no messages.
 
 > Status: in progress. Live links will appear here as each part ships.
 
@@ -27,7 +27,7 @@ Extras:
 | Store | Daily Parquet files in a public dataset | Hugging Face Datasets |
 | Clean | Flag stuck sensors, impossible jumps and gaps; every rule is a tested check | dbt + DuckDB |
 | Analyse | Remove the weather effect, then test whether GRAP worked | LightGBM, statsmodels, synthetic control |
-| Share | A full write-up with charts, a run-window web app, a Telegram bot | Quarto on GitHub Pages, Vercel, Telegram |
+| Share | A full write-up with charts, a run-window web app, a calendar feed | Quarto on GitHub Pages, Vercel, iCalendar |
 
 Everything runs on free tiers. No cloud bill. See [docs/adr](docs/adr) for why each choice was made.
 
@@ -46,15 +46,24 @@ make setup
 make test
 ```
 
-Copy `.env.example` to `.env` and add your free API keys (the file says where to get each one).
+Copy `.env.example` to `.env` and add your free API keys (the file says where to get each one). Then collect the data:
+
+```bash
+make stations      # find government PM2.5 stations near each city
+make backfill      # full history (about an hour, because of API limits)
+make daily         # just the last week; this is what the daily job runs
+```
+
+You can also skip collecting and read the public dataset on Hugging Face directly.
 
 ## Known limitations
 
 - Monitoring stations are not spread evenly. Some cities have one or two, so one bad sensor can skew a whole city.
 - OpenAQ republishes CPCB data. If CPCB data is late or missing, so is ours.
 - The cigarette comparison is a rough rule of thumb from Berkeley Earth, not a medical measure.
+- OpenAQ has almost no CPCB data from November 2022 to February 2025, so three winters are missing. See the [data card](docs/data-card.md).
 - This is not medical advice. If you have asthma or a heart condition, follow your doctor.
 
 ## Licence
 
-MIT. Data comes from its original sources under their own terms (listed in the data card, coming in Part 2).
+MIT. Data comes from its original sources under their own terms, listed in the [data card](docs/data-card.md).
