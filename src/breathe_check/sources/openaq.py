@@ -19,6 +19,7 @@ import pandas as pd
 
 from breathe_check.cities import CITIES, City
 from breathe_check.http import RateLimiter, get_with_retry
+from breathe_check.http import make_client as ipv4_client
 
 BASE_URL = "https://api.openaq.org/v3"
 PM25_PARAMETER_ID = 2
@@ -41,7 +42,7 @@ class Station:
 
 
 def make_client(api_key: str) -> httpx.Client:
-    return httpx.Client(base_url=BASE_URL, headers={"X-API-Key": api_key}, timeout=60)
+    return ipv4_client(base_url=BASE_URL, headers={"X-API-Key": api_key}, timeout=60)
 
 
 def distance_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:

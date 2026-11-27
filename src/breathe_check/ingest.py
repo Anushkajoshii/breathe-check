@@ -12,12 +12,11 @@ Examples:
 import argparse
 from datetime import UTC, date, datetime, timedelta
 
-import httpx
 import pandas as pd
 
 from breathe_check import settings, storage
 from breathe_check.cities import CITIES, City, get_city
-from breathe_check.http import RateLimiter
+from breathe_check.http import RateLimiter, make_client
 from breathe_check.sources import firms, openaq, weather
 
 STATIONS_FILE = "stations.csv"
@@ -116,7 +115,7 @@ def cmd_air(args) -> None:
 
 
 def cmd_weather(args) -> None:
-    with httpx.Client(timeout=120) as client:
+    with make_client(timeout=120) as client:
         for city in pick_cities(args.cities):
             if args.recent:
                 frame = weather.fetch_recent_and_forecast(client, city)
@@ -133,7 +132,7 @@ def cmd_fires(args) -> None:
     key = settings.need("FIRMS_MAP_KEY")
     keys = ["latitude", "longitude", "acq_date", "acq_time"]
     this_year = datetime.now(UTC).year
-    with httpx.Client(timeout=120) as client:
+    with make_client(timeout=120) as client:
         for year in range(args.start.year, args.end.year + 1):
             saved = settings.RAW_DIR / "fires" / "punjab_haryana" / f"{year}.parquet"
             if saved.exists() and year < this_year and not args.refresh:
