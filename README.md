@@ -15,9 +15,9 @@ Extras:
 
 - **Cigarette equivalent**: today's air turned into "like smoking N cigarettes", so the numbers mean something.
 - **Stubble-smoke check**: NASA fire counts in Punjab and Haryana plus wind direction answer "is crop-fire smoke blowing into Delhi today?"
-- **Run-window calendar**: add one link to Google or Apple Calendar, and every evening it puts tomorrow's best 2-hour run window in your calendar, with the AQI. No app, no sign-up, no messages.
+- **Run-window calendar**: add one link to Google or Apple Calendar, and every evening it puts tomorrow's best 2-hour run window in your calendar, with the AQI. No app, no sign-up, no messages. [How to add it](docs/calendar.md).
 
-> Status: in progress. Live links will appear here as each part ships.
+**Live app: https://breathe-check-flax.vercel.app** · Data: [Hugging Face](https://huggingface.co/datasets/Anushkajoshii/breathe-check-data)
 
 ## How it works (short version)
 
@@ -72,6 +72,8 @@ You can also skip collecting and read the public dataset on Hugging Face directl
 
 A small web page that answers one question for 20 Indian cities: **when is it safest to be outside tomorrow?** It shows the best 2-hour window, an hour-by-hour forecast with a range, the last 24 hours as cigarettes, and, for Delhi-NCR, whether crop-fire smoke is likely. It reads the forecasts the daily job uploads, so it's always fresh.
 
+- Live: **https://breathe-check-flax.vercel.app**
+- Calendar feed for any city: `https://breathe-check-flax.vercel.app/calendar/<city>.ics` ([how to add it](docs/calendar.md))
 - Code: [`web/`](web) (React, Vite, TypeScript). Run it locally with `cd web && npm install && npm run dev`.
 - Putting it online: [docs/deploy-web.md](docs/deploy-web.md).
 
