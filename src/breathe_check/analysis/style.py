@@ -127,9 +127,11 @@ def end_label(ax, x, y, text: str, color: str) -> None:
 
 
 def source_note(
-    fig, text: str = "Data: CPCB via OpenAQ, Open-Meteo, NASA FIRMS. Breathe Check."
+    fig,
+    text: str = "Data: CPCB via OpenAQ, Open-Meteo, NASA FIRMS. Breathe Check.",
+    y: float = -0.02,
 ) -> None:
-    fig.text(0.01, -0.02, text, color=TEXT_MUTED, fontsize=8, ha="left", va="top")
+    fig.text(0.01, y, text, color=TEXT_MUTED, fontsize=8, ha="left", va="top")
 
 
 def save(fig, name: str) -> Path:
