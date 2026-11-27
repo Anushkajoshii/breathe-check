@@ -31,7 +31,7 @@ REGIONS = {"punjab_haryana": (73.8, 27.6, 77.6, 32.6)}
 def get_csv(client: httpx.Client, url: str, sleep=time.sleep, max_waits: int = 15) -> str:
     """GET a FIRMS CSV. If we hit the 10-minute limit, wait a minute and try again."""
     for _ in range(max_waits + 1):
-        response = client.get(url)
+        response = get_with_retry(client, url, sleep=sleep, ok_status={400})
         if LIMIT_MESSAGE in response.text[:200].lower():
             sleep(60)
             continue

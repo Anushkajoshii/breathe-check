@@ -7,6 +7,18 @@ import httpx
 RETRY_STATUS = {408, 429, 500, 502, 503, 504}
 
 
+def make_client(**kwargs) -> httpx.Client:
+    """An HTTP client that always connects over IPv4.
+
+    Some servers (NASA FIRMS among them) list an IPv6 address first. GitHub's
+    runners have no IPv6, and httpx doesn't fall back to IPv4 by itself, so the
+    connection fails with "Network is unreachable". Binding to 0.0.0.0 makes
+    every connection use IPv4. `retries` quickly retries failed connections.
+    """
+    transport = httpx.HTTPTransport(local_address="0.0.0.0", retries=2)
+    return httpx.Client(transport=transport, **kwargs)
+
+
 def get_with_retry(
     client: httpx.Client,
     url: str,
@@ -14,6 +26,7 @@ def get_with_retry(
     params: dict | None = None,
     tries: int = 5,
     sleep=time.sleep,
+    ok_status: set[int] | None = None,
 ) -> httpx.Response:
     """GET a URL. On "too many requests" or a server error, wait and try again.
 
@@ -28,6 +41,8 @@ def get_with_retry(
                 raise
             sleep(2 ** (attempt + 1))
             continue
+        if response.status_code in (ok_status or set()):
+            return response
         if response.status_code not in RETRY_STATUS:
             response.raise_for_status()
             return response

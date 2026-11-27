@@ -44,3 +44,18 @@ def test_rate_limiter_spaces_calls():
     now[0] += 0.25
     limiter.wait()
     assert waits == [pytest.approx(0.75)]
+
+
+def test_clients_connect_over_ipv4_and_retry_connections():
+    from breathe_check.http import make_client
+
+    client = make_client(timeout=5)
+    pool = client._transport._pool
+    assert pool._local_address == "0.0.0.0"  # IPv4 only: GitHub runners have no IPv6
+    assert pool._retries == 2
+
+
+def test_allowed_error_codes_are_handed_back_not_raised():
+    client = client_from([httpx.Response(400, text="Exceeding allowed transaction limit.")])
+    response = get_with_retry(client, "https://x.test/a", sleep=lambda s: None, ok_status={400})
+    assert response.status_code == 400
