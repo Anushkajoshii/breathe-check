@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { BestTime } from "./components/BestTime";
+import { CalendarCard } from "./components/CalendarCard";
 import { CityPicker } from "./components/CityPicker";
 import { HourlyChart } from "./components/HourlyChart";
 import { LastDay } from "./components/LastDay";
@@ -98,6 +99,7 @@ export default function App() {
             ) : (
               <LastDay f={forecast} />
             )}
+            <CalendarCard city={forecast.city} name={forecast.name} />
           </>
         )}
       </main>

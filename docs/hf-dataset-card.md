@@ -40,6 +40,7 @@ Updated every evening at 7 pm India time by a GitHub Actions job.
 | `clean/grap_*.parquet` | GRAP event-study, placebo and synthetic-control results | Project analysis |
 | `public/forecast/<city>.json` | Tomorrow's hourly PM2.5 forecast (low, middle, high), best 2-hour window, last-24-hours card, smoke check | Made every evening |
 | `public/forecast/index.json` | List of cities and their best windows | Made every evening |
+| `public/calendar/<city>.ics` | Calendar feed: each day's best 2-hour window as an event, last 14 days (history in `<city>.json`) | Made every evening |
 | `public/status.json` | When the last daily update ran, what worked, and how fresh each source is | Made every evening |
 
 ## Read it with DuckDB

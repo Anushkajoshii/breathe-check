@@ -16,6 +16,10 @@ The app in `web/` is a plain static site. Vercel's free plan hosts it and redepl
 - **The forecasts update by themselves** every evening. The app reads them from Hugging Face, so no redeploy is needed for new data.
 - **To change the site's name,** go to Vercel → the project → **Settings → Domains**.
 
+## Calendar links
+
+`web/vercel.json` passes `/calendar/<city>.ics` through from the Hugging Face dataset and labels it `text/calendar`, so the calendar feed has a tidy address on the app's own site. See [calendar.md](calendar.md).
+
 ## Run it on your own computer
 
 ```bash

@@ -86,3 +86,21 @@ test("a clear message when the forecast can't load", async () => {
   render(<App />);
   await waitFor(() => expect(screen.getByRole("alert")).toHaveTextContent("Couldn't load the forecast"));
 });
+
+test("calendar links point at the city's feed on this site", async () => {
+  const { calendarLinks } = await import("./components/CalendarCard");
+  const links = calendarLinks("indore", "breathe-check-flax.vercel.app");
+  expect(links.https).toBe("https://breathe-check-flax.vercel.app/calendar/indore.ics");
+  expect(links.webcal).toBe("webcal://breathe-check-flax.vercel.app/calendar/indore.ics");
+  expect(links.google).toContain(encodeURIComponent("webcal://breathe-check-flax.vercel.app/calendar/indore.ics"));
+});
+
+test("the calendar card shows under the forecast", async () => {
+  mockFetch({ "forecast/index.json": index, "forecast/indore.json": indore, "status.json": status });
+  render(<App />);
+  expect(await screen.findByText("Get it in your calendar")).toBeInTheDocument();
+  expect(screen.getByRole("link", { name: "Google Calendar" })).toHaveAttribute(
+    "href",
+    expect.stringContaining("calendar.google.com"),
+  );
+});

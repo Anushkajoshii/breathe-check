@@ -9,7 +9,8 @@ from breathe_check import daily, settings
 def sandbox(tmp_path, monkeypatch):
     monkeypatch.setattr(settings, "DATA_DIR", tmp_path)
     calls = []
-    monkeypatch.setattr(daily.storage, "pull_from_hub", lambda: calls.append("pull"))
+    monkeypatch.setattr(daily.storage, "pull_from_hub", lambda *a: calls.append("pull"))
+    monkeypatch.setattr(daily.calendar_feed, "main", lambda: calls.append("calendar"))
     monkeypatch.setattr(daily.storage, "upload_to_hub", lambda **k: calls.append("upload"))
     monkeypatch.setattr(daily, "freshness", lambda: {"air_hourly_latest": "2026-11-27 23:00"})
     return tmp_path, calls
@@ -59,7 +60,7 @@ def test_no_pull_and_no_upload_flags(sandbox, monkeypatch):
     monkeypatch.setattr(daily, "clean", lambda: None)
     monkeypatch.setattr(daily.forecast, "main", lambda: None)
     assert daily.main(["--no-pull", "--no-upload"]) == 0
-    assert calls == []
+    assert calls == ["calendar"]  # no pull, no upload; the calendar is still made
     assert status(tmp_path)["ok"] is True
 
 

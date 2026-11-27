@@ -10,6 +10,7 @@ Steps:
               forecast, and crop fires
  3. clean     run the dbt cleaning rules and rebuild the clean tables
  4. forecast  make tomorrow's run-window forecast for every city
+    calendar  add tomorrow's best window to each city's calendar feed (.ics)
  5. status    write data/public/status.json: when this ran, how fresh each source is
  6. upload    push raw, clean and public files back to Hugging Face
 
@@ -28,7 +29,7 @@ from datetime import UTC, datetime, timedelta
 
 import pandas as pd
 
-from breathe_check import forecast, ingest, settings, storage
+from breathe_check import calendar_feed, forecast, ingest, settings, storage
 
 FETCH_STEPS = [
     ("air_daily", ["air", "--kind", "days"]),
@@ -104,10 +105,15 @@ def main(argv: list[str] | None = None) -> int:
 
     status = {"started_at": datetime.now(UTC).isoformat(timespec="seconds"), "steps": {}}
     if not args.no_pull:
-        run_step("pull", storage.pull_from_hub, status)
+        # raw data, plus the calendar history so each feed keeps its last 14 days
+        patterns = ("raw/*", "raw/**", "public/calendar/*.json")
+        run_step("pull", lambda: storage.pull_from_hub(patterns), status)
     for name, step in FETCH_STEPS:
         run_step(f"fetch_{name}", lambda step=step: fetch(step), status)
     ok = run_step("clean", clean, status) and run_step("forecast", forecast.main, status)
+    if ok:
+        # a calendar problem is recorded but doesn't block the forecast
+        run_step("calendar", calendar_feed.main, status)
 
     status["finished_at"] = datetime.now(UTC).isoformat(timespec="seconds")
     status["data_up_to"] = freshness()
