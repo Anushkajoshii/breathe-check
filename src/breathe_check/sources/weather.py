@@ -68,9 +68,9 @@ def fetch_history(client: httpx.Client, city: City, start: date, end: date) -> p
 
 
 def fetch_recent_and_forecast(
-    client: httpx.Client, city: City, past_days: int = 7, forecast_days: int = 2
+    client: httpx.Client, city: City, past_days: int = 7, forecast_days: int = 3
 ) -> pd.DataFrame:
-    """The last few days (to fill the archive's delay) plus the next two days."""
+    """The last few days (to fill the archive's delay) plus today and the next two days."""
     response = get_with_retry(
         client,
         FORECAST_URL,

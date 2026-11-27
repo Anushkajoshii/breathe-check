@@ -160,6 +160,8 @@ def test_cleaned_tables_are_written_as_parquet(db):
     assert written == [
         "city_day.parquet",
         "city_hour.parquet",
+        "fires_day.parquet",
         "quality_report.parquet",
         "station_quality.parquet",
+        "weather_hour.parquet",
     ]
