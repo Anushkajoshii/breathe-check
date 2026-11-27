@@ -33,7 +33,7 @@ Everything runs on free tiers. No cloud bill. See [docs/adr](docs/adr) for why e
 
 ## Results so far
 
-Every number here comes from code in this repo that anyone can re-run. Write-ups so far: [first look at the data](reports/01-first-look.md) and [taking the weather out](reports/02-weather-adjusted.md).
+Every number here comes from code in this repo that anyone can re-run. Write-ups so far: [first look at the data](reports/01-first-look.md), [taking the weather out](reports/02-weather-adjusted.md) and [did GRAP work?](reports/03-did-grap-work.md)
 
 ![Afternoons are cleanest](reports/figures/03_hourly_profile.png)
 
@@ -42,7 +42,8 @@ Every number here comes from code in this repo that anyone can re-run. Write-ups
 - **The day after Diwali** is about twice as polluted as the week before, in Delhi and in Indore.
 - **Afternoons are cleanest.** In winter, Delhi's air at 5 pm has about 40% less PM2.5 than at midnight.
 - **Weather alone** moves Delhi's winter PM2.5 by about 40%. A weather-only model predicts 80% of Delhi's day-to-day ups and downs on winters it never saw.
-- **November 2025 was 48% dirtier than its weather explains.** Why is the question for Part 7.
+- **November 2025 was 48% dirtier than its weather explains.**
+- **Did GRAP's strictest stages cut PM2.5 in their first week? We can't find it.** Raw numbers swing +37% after the stages switch on and −31% after they switch off, but that's the bad spells themselves. With weather taken out and Delhi-NCR compared with similar cities that have no GRAP, the change is +8% (90% range −5% to +23%), no different from random dates. Only four events fall in the data, so this is weak evidence, but a large quick cut is hard to believe.
 
 ## Run it yourself
 

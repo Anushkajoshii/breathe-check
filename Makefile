@@ -1,4 +1,4 @@
-.PHONY: setup test lint format clean stations backfill daily upload clean-data docs-data figures models
+.PHONY: setup test lint format clean stations backfill daily upload clean-data docs-data figures models grap
 
 setup:        ## install everything and turn on pre-commit
 	uv sync
@@ -53,3 +53,6 @@ figures:      ## draw the charts in reports/figures from the clean tables
 
 models:       ## train the weather-only models and save weather-adjusted PM2.5
 	uv run python analysis/deweather.py
+
+grap:         ## did GRAP work? event study, comparison cities, placebo, synthetic control
+	uv run python analysis/grap_effect.py
