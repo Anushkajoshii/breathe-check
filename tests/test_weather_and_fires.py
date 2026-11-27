@@ -73,3 +73,17 @@ def test_fetch_fires_uses_final_data_when_available_and_dedupes():
     frame = firms.fetch_fires(client, "KEY", date(2024, 10, 27), date(2024, 11, 5))
     assert asked == ["VIIRS_SNPP_SP", "VIIRS_SNPP_NRT"]
     assert len(frame) == 2  # the duplicate row is removed
+
+
+def test_fire_limit_message_makes_us_wait_and_retry():
+    replies = iter(
+        [
+            httpx.Response(400, text="Exceeding allowed transaction limit."),
+            httpx.Response(200, text=FIRE_CSV),
+        ]
+    )
+    client = httpx.Client(transport=httpx.MockTransport(lambda request: next(replies)))
+    waits = []
+    text = firms.get_csv(client, "https://x.test/a", sleep=waits.append)
+    assert waits == [60]
+    assert text.startswith("latitude")

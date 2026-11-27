@@ -110,12 +110,21 @@ def cmd_weather(args) -> None:
 
 
 def cmd_fires(args) -> None:
+    """Fetch one year at a time and save as we go, so a long backfill can resume."""
     key = settings.need("FIRMS_MAP_KEY")
-    with httpx.Client(timeout=120) as client:
-        frame = firms.fetch_fires(client, key, args.start, args.end)
     keys = ["latitude", "longitude", "acq_date", "acq_time"]
-    storage.save_by_year(frame, "fires", "region", "time_utc", keys)
-    log(f"{len(frame)} fire detections from {args.start} to {args.end}")
+    this_year = datetime.now(UTC).year
+    with httpx.Client(timeout=120) as client:
+        for year in range(args.start.year, args.end.year + 1):
+            saved = settings.RAW_DIR / "fires" / "punjab_haryana" / f"{year}.parquet"
+            if saved.exists() and year < this_year and not args.refresh:
+                log(f"{year}: already saved, skipping")
+                continue
+            a = max(args.start, date(year, 1, 1))
+            b = min(args.end, date(year, 12, 31))
+            frame = firms.fetch_fires(client, key, a, b)
+            storage.save_by_year(frame, "fires", "region", "time_utc", keys)
+            log(f"{year}: {len(frame)} fire detections")
 
 
 def cmd_upload(args) -> None:
@@ -155,6 +164,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     p = sub.add_parser("fires", help="crop fires from NASA FIRMS")
     add_common(p, today - timedelta(days=7))
+    p.add_argument("--refresh", action="store_true", help="re-fetch years already saved")
     p.set_defaults(func=cmd_fires)
 
     p = sub.add_parser("upload", help="copy data/raw to the Hugging Face dataset")

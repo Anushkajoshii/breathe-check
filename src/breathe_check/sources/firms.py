@@ -10,6 +10,7 @@ FIRMS has two versions of the same data:
 """
 
 import io
+import time
 from datetime import date, timedelta
 
 import httpx
@@ -20,8 +21,23 @@ from breathe_check.http import get_with_retry
 BASE_URL = "https://firms.modaps.eosdis.nasa.gov/api"
 MAX_DAYS_PER_CALL = 5  # the API refuses more than 5 days per call
 
+# FIRMS allows 5000 "transactions" per 10 minutes; each call costs several.
+LIMIT_MESSAGE = "exceeding allowed transaction limit"
+
 # west, south, east, north: Punjab and Haryana
 REGIONS = {"punjab_haryana": (73.8, 27.6, 77.6, 32.6)}
+
+
+def get_csv(client: httpx.Client, url: str, sleep=time.sleep, max_waits: int = 15) -> str:
+    """GET a FIRMS CSV. If we hit the 10-minute limit, wait a minute and try again."""
+    for _ in range(max_waits + 1):
+        response = client.get(url)
+        if LIMIT_MESSAGE in response.text[:200].lower():
+            sleep(60)
+            continue
+        response.raise_for_status()
+        return response.text
+    raise RuntimeError("FIRMS transaction limit did not reset in time")
 
 
 def parse_csv(text: str) -> pd.DataFrame:
@@ -55,7 +71,12 @@ def date_chunks(start: date, end: date, size: int = MAX_DAYS_PER_CALL):
 
 
 def fetch_fires(
-    client: httpx.Client, key: str, start: date, end: date, region: str = "punjab_haryana"
+    client: httpx.Client,
+    key: str,
+    start: date,
+    end: date,
+    region: str = "punjab_haryana",
+    sleep=time.sleep,
 ) -> pd.DataFrame:
     """All fire detections in a region between two dates (inclusive)."""
     west, south, east, north = REGIONS[region]
@@ -67,7 +88,7 @@ def fetch_fires(
             "VIIRS_SNPP_SP" if first_day + timedelta(days=days - 1) <= cutoff else "VIIRS_SNPP_NRT"
         )
         url = f"{BASE_URL}/area/csv/{key}/{source}/{area}/{days}/{first_day.isoformat()}"
-        frame = parse_csv(get_with_retry(client, url).text)
+        frame = parse_csv(get_csv(client, url, sleep=sleep))
         if not frame.empty:
             frame["source"] = source
             parts.append(frame)
