@@ -68,6 +68,13 @@ make clean-data    # run the cleaning rules and build the analysis tables
 
 You can also skip collecting and read the public dataset on Hugging Face directly.
 
+## The app
+
+A small web page that answers one question for 20 Indian cities: **when is it safest to be outside tomorrow?** It shows the best 2-hour window, an hour-by-hour forecast with a range, the last 24 hours as cigarettes, and, for Delhi-NCR, whether crop-fire smoke is likely. It reads the forecasts the daily job uploads, so it's always fresh.
+
+- Code: [`web/`](web) (React, Vite, TypeScript). Run it locally with `cd web && npm install && npm run dev`.
+- Putting it online: [docs/deploy-web.md](docs/deploy-web.md).
+
 ## How it stays fresh
 
 Every evening at 7 pm India time, a GitHub Actions job fetches the last week of data, cleans it, makes tomorrow's forecasts and uploads them to Hugging Face. It needs no server and costs nothing. See [the daily update](docs/daily-update.md).
