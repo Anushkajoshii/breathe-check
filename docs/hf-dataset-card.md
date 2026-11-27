@@ -35,6 +35,9 @@ Updated daily by a GitHub Actions job.
 | `clean/station_quality.parquet` | Share of usable days per station | Built by the project's dbt rules |
 | `clean/city_day_adjusted.parquet` | Weather-adjusted PM2.5: actual, what the weather predicts, and the ratio | LightGBM weather-only model per city |
 | `clean/deweather_scores.parquet` | How well each city's weather model predicts seasons it never saw | Same |
+| `clean/city_season_summary.parquet` | Each city and full year (July-June): average PM2.5, days over India's and WHO's limits, cigarette equivalent | Project analysis |
+| `clean/weather_fair_ranking.parquet` | Each city vs one shared weather model, 2025-26 | Project analysis |
+| `clean/grap_*.parquet` | GRAP event-study, placebo and synthetic-control results | Project analysis |
 
 ## Read it with DuckDB
 

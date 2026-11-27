@@ -33,12 +33,12 @@ Everything runs on free tiers. No cloud bill. See [docs/adr](docs/adr) for why e
 
 ## Results so far
 
-Every number here comes from code in this repo that anyone can re-run. Write-ups so far: [first look at the data](reports/01-first-look.md), [taking the weather out](reports/02-weather-adjusted.md) and [did GRAP work?](reports/03-did-grap-work.md)
+Every number here comes from code in this repo that anyone can re-run. Write-ups so far: [first look at the data](reports/01-first-look.md), [taking the weather out](reports/02-weather-adjusted.md) , [did GRAP work?](reports/03-did-grap-work.md) and [India's cleanest city: is its air clean?](reports/04-indore.md)
 
 ![Afternoons are cleanest](reports/figures/03_hourly_profile.png)
 
 - **Delhi in November and December** averages 213 µg/m³ of PM2.5: more than 3.5 times India's daily limit, about 14 times the WHO guideline.
-- **Indore**, India's cleanest city by its waste ranking, crosses India's daily limit on an average winter day.
+- **Indore**, India's cleanest city by its waste ranking, averaged 41 µg/m³ in July 2025 to June 2026: the cleanest of its neighbours, but right at India's yearly limit (40) and 8 times the WHO guideline. Judged against its weather, it's ordinary.
 - **The day after Diwali** is about twice as polluted as the week before, in Delhi and in Indore.
 - **Afternoons are cleanest.** In winter, Delhi's air at 5 pm has about 40% less PM2.5 than at midnight.
 - **Weather alone** moves Delhi's winter PM2.5 by about 40%. A weather-only model predicts 80% of Delhi's day-to-day ups and downs on winters it never saw.
