@@ -1,4 +1,4 @@
-.PHONY: setup test lint format clean stations backfill daily upload
+.PHONY: setup test lint format clean stations backfill daily upload clean-data docs-data
 
 setup:        ## install everything and turn on pre-commit
 	uv sync
@@ -38,3 +38,12 @@ daily:        ## fetch the last week of everything plus the weather forecast
 
 upload:       ## copy data/raw to the Hugging Face dataset
 	$(INGEST) upload
+
+DBT = uv run dbt
+
+clean-data:   ## run the cleaning rules and build the analysis tables (data/clean/*.parquet)
+	mkdir -p data/clean
+	$(DBT) build --project-dir transform --profiles-dir transform
+
+docs-data:    ## open dbt's browsable docs for the tables
+	$(DBT) docs generate --project-dir transform --profiles-dir transform && $(DBT) docs serve --project-dir transform --profiles-dir transform

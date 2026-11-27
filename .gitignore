@@ -28,3 +28,9 @@ web/dist/
 .DS_Store
 .vscode/
 .idea/
+
+# dbt
+transform/target/
+transform/logs/
+transform/dbt_packages/
+logs/

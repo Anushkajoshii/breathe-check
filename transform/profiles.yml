@@ -1,0 +1,9 @@
+breathe_check:
+  target: local
+  outputs:
+    local:
+      type: duckdb
+      path: "{{ env_var('BREATHE_DUCKDB', 'data/breathe.duckdb') }}"
+      threads: 4
+      settings:
+        TimeZone: UTC
