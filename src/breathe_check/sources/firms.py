@@ -48,6 +48,9 @@ def parse_csv(text: str) -> pd.DataFrame:
             raise ValueError(f"FIRMS error: {text[:200]}")
         return pd.DataFrame()
     frame = pd.read_csv(io.StringIO(text))
+    # Final data says "2", near-real-time says "2.0NRT"; keep it as text
+    frame["version"] = frame["version"].astype(str)
+    frame["confidence"] = frame["confidence"].astype(str)
     hhmm = frame["acq_time"].astype(int).astype(str).str.zfill(4)
     frame["time_utc"] = pd.to_datetime(
         frame["acq_date"] + " " + hhmm.str[:2] + ":" + hhmm.str[2:], utc=True

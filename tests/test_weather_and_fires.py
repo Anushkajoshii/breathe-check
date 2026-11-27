@@ -87,3 +87,8 @@ def test_fire_limit_message_makes_us_wait_and_retry():
     text = firms.get_csv(client, "https://x.test/a", sleep=waits.append)
     assert waits == [60]
     assert text.startswith("latitude")
+
+
+def test_fire_version_is_always_text():
+    nrt = FIRE_CSV.replace(",2,305.3,3.2,D,0", ",2.0NRT,305.3,3.2,D,0")
+    assert firms.parse_csv(nrt)["version"].map(type).eq(str).all()
