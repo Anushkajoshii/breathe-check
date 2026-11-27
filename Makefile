@@ -1,4 +1,4 @@
-.PHONY: setup test lint format clean stations backfill daily upload clean-data docs-data figures models grap indore forecast run-window
+.PHONY: setup test lint format clean stations backfill daily daily-local upload clean-data docs-data figures models grap indore forecast run-window
 
 setup:        ## install everything and turn on pre-commit
 	uv sync
@@ -29,12 +29,11 @@ backfill:     ## download full history (slow: OpenAQ allows ~2000 calls an hour)
 	$(INGEST) weather --start 2018-01-01
 	$(INGEST) fires --start 2018-01-01
 
-daily:        ## fetch the last week of everything plus the weather forecast
-	$(INGEST) air --kind days
-	$(INGEST) air --kind hours
-	$(INGEST) weather
-	$(INGEST) weather --recent
-	$(INGEST) fires
+daily:        ## the full daily update: pull, fetch last week, clean, forecast, upload
+	uv run python -m breathe_check.daily
+
+daily-local:  ## the daily update using data already on disk, without uploading
+	uv run python -m breathe_check.daily --no-pull --no-upload
 
 upload:       ## copy data/raw to the Hugging Face dataset
 	$(INGEST) upload
