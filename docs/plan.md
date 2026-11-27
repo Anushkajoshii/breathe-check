@@ -10,7 +10,7 @@ Each part is one branch and one pull request.
 | 4 | Cleaning with dbt + DuckDB: stuck sensors, spikes, gaps, all as tests | Done |
 | 5 | First look at the data: seasons, hours, station coverage | Done |
 | 6 | Weather-adjusted PM2.5 ("deweathering") model and checks | Done |
-| 7 | Did GRAP work? Event study, difference-in-differences, synthetic control | In review |
+| 7 | Did GRAP work? Event study, difference-in-differences, synthetic control | Done |
 | 8 | Indore vs India's limits, WHO and peer cities | To do |
 | 9 | Run-window forecast with uncertainty, cigarette equivalent, stubble-smoke check | To do |
 | 10 | Daily data workflow on GitHub Actions | To do |
