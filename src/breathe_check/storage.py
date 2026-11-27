@@ -48,7 +48,7 @@ def read_source(source: str, root: Path | None = None) -> pd.DataFrame:
 
 
 def upload_to_hub(folder: Path | None = None, message: str = "Update data") -> str:
-    """Copy the local data folder to the Hugging Face dataset."""
+    """Copy data/raw (and data/clean, if built) to the Hugging Face dataset."""
     from huggingface_hub import HfApi
 
     api = HfApi(token=settings.need("HF_TOKEN"))
@@ -62,6 +62,16 @@ def upload_to_hub(folder: Path | None = None, message: str = "Update data") -> s
         ignore_patterns=["_progress/*"],
         commit_message=message,
     )
+    clean = settings.DATA_DIR / "clean"
+    if folder is None and any(clean.glob("*.parquet")):
+        api.upload_folder(
+            repo_id=repo_id,
+            repo_type="dataset",
+            folder_path=str(clean),
+            path_in_repo="clean",
+            allow_patterns=["*.parquet"],
+            commit_message=message,
+        )
     card = settings.ROOT / "docs" / "hf-dataset-card.md"
     if card.exists():
         api.upload_file(
