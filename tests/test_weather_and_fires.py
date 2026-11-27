@@ -64,7 +64,9 @@ def test_fetch_fires_uses_final_data_when_available_and_dedupes():
         path = request.url.path
         if "data_availability" in path:
             return httpx.Response(
-                200, text="data_id,min_date,max_date\nVIIRS_SNPP_SP,2012-01-20,2024-10-31\n"
+                200,
+                text="data_id,min_date,max_date\nVIIRS_SNPP_SP,2012-01-20,2024-10-31\n"
+                "VIIRS_SNPP_NRT,2024-09-01,2024-12-31\n",
             )
         asked.append(path.split("/")[5])
         return httpx.Response(200, text=FIRE_CSV)
@@ -92,3 +94,14 @@ def test_fire_limit_message_makes_us_wait_and_retry():
 def test_fire_version_is_always_text():
     nrt = FIRE_CSV.replace(",2,305.3,3.2,D,0", ",2.0NRT,305.3,3.2,D,0")
     assert firms.parse_csv(nrt)["version"].map(type).eq(str).all()
+
+
+def test_after_suomi_npp_stops_we_switch_to_noaa20():
+    last = {
+        "VIIRS_SNPP_SP": date(2026, 8, 31),
+        "VIIRS_SNPP_NRT": date(2026, 11, 2),
+        "VIIRS_NOAA20_NRT": date(2026, 11, 27),
+    }
+    assert firms.pick_source(date(2026, 8, 30), last) == "VIIRS_SNPP_SP"
+    assert firms.pick_source(date(2026, 10, 1), last) == "VIIRS_SNPP_NRT"
+    assert firms.pick_source(date(2026, 11, 20), last) == "VIIRS_NOAA20_NRT"

@@ -132,6 +132,12 @@ def cmd_fires(args) -> None:
             a = max(args.start, date(year, 1, 1))
             b = min(args.end, date(year, 12, 31))
             frame = firms.fetch_fires(client, key, a, b)
+            # Replace, don't add: the days we just fetched may come from a different
+            # satellite than before, and must not be counted twice.
+            if saved.exists():
+                old = pd.read_parquet(saved)
+                keep = ~old["acq_date"].between(a.isoformat(), b.isoformat())
+                old[keep].to_parquet(saved, index=False)
             storage.save_by_year(frame, "fires", "region", "time_utc", keys)
             log(f"{year}: {len(frame)} fire detections")
 
