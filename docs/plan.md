@@ -6,8 +6,8 @@ Each part is one branch and one pull request.
 |---|---|---|
 | 1 | Repo setup, city list, AQI and cigarette helpers, tests, CI, decision records | Done |
 | 2 | Data collection: OpenAQ air quality, Open-Meteo weather, NASA crop fires, upload to Hugging Face | Done |
-| 3 | GRAP stage dates CSV with sources, Diwali dates | In review |
-| 4 | Cleaning with dbt + DuckDB: stuck sensors, spikes, gaps, all as tests | To do |
+| 3 | GRAP stage dates CSV with sources, Diwali dates | Done |
+| 4 | Cleaning with dbt + DuckDB: stuck sensors, spikes, gaps, all as tests | In review |
 | 5 | First look at the data: seasons, hours, station coverage | To do |
 | 6 | Weather-adjusted PM2.5 ("deweathering") model and checks | To do |
 | 7 | Did GRAP work? Event study, difference-in-differences, synthetic control | To do |
