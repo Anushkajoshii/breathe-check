@@ -5,8 +5,8 @@ Each part is one branch and one pull request.
 | Part | What it adds | Status |
 |---|---|---|
 | 1 | Repo setup, city list, AQI and cigarette helpers, tests, CI, decision records | Done |
-| 2 | Data collection: OpenAQ air quality, Open-Meteo weather, NASA crop fires, upload to Hugging Face | In review |
-| 3 | GRAP stage dates CSV with sources, Diwali dates | To do |
+| 2 | Data collection: OpenAQ air quality, Open-Meteo weather, NASA crop fires, upload to Hugging Face | Done |
+| 3 | GRAP stage dates CSV with sources, Diwali dates | In review |
 | 4 | Cleaning with dbt + DuckDB: stuck sensors, spikes, gaps, all as tests | To do |
 | 5 | First look at the data: seasons, hours, station coverage | To do |
 | 6 | Weather-adjusted PM2.5 ("deweathering") model and checks | To do |
