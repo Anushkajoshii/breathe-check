@@ -24,3 +24,6 @@ models:
     marts:
       +materialized: table
       +post-hook: "copy {{ this }} to '{{ var('clean_dir') }}/{{ this.name }}.parquet' (format parquet)"
+
+flags:
+  send_anonymous_usage_stats: false
