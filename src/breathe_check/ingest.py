@@ -23,6 +23,13 @@ from breathe_check.sources import firms, openaq, weather
 STATIONS_FILE = "stations.csv"
 
 
+def openaq_limiter() -> RateLimiter:
+    """OpenAQ allows 60 calls a minute and about 2,000 an hour. Long backfills go
+    slowly (33 a minute) to stay under the hourly cap; the short daily run can go
+    faster by setting OPENAQ_PER_MINUTE."""
+    return RateLimiter(per_minute=int(settings.get("OPENAQ_PER_MINUTE", "33")))
+
+
 def log(msg: str) -> None:
     print(f"[{datetime.now():%H:%M:%S}] {msg}", flush=True)
 
@@ -59,7 +66,7 @@ def recent_stations(stations, city: str, per_city: int, days: int = 30) -> list:
 
 
 def cmd_stations(args) -> None:
-    limiter = RateLimiter(per_minute=33)
+    limiter = openaq_limiter()
     with openaq.make_client(settings.need("OPENAQ_API_KEY")) as client:
         stations = openaq.find_stations(client, pick_cities(args.cities), args.radius_km, limiter)
     frame = openaq.stations_frame(stations)
@@ -81,7 +88,7 @@ def cmd_air(args) -> None:
     done_file = settings.RAW_DIR / "_progress" / f"{source}_{args.start}_{args.end}.txt"
     done_file.parent.mkdir(parents=True, exist_ok=True)
     done = set(done_file.read_text().split()) if done_file.exists() else set()
-    limiter = RateLimiter(per_minute=33)
+    limiter = openaq_limiter()
     log(f"Fetching {args.kind} for {len(chosen)} stations ({len(done)} already done)")
     with openaq.make_client(settings.need("OPENAQ_API_KEY")) as client:
         for i, station in enumerate(chosen, 1):
@@ -94,8 +101,11 @@ def cmd_air(args) -> None:
                 sensors = tuple(
                     sid for sid, rng in ranges.items() if openaq.overlaps(rng, args.start, args.end)
                 )
+            # Hourly requests stop *before* their end time, so ask up to the start of
+            # the day after `end`; otherwise everything measured on `end` is lost.
+            end = args.end + timedelta(days=1) if args.kind == "hours" else args.end
             frame = openaq.fetch_station(
-                client, station, args.kind, args.start, args.end, limiter, sensor_ids=sensors
+                client, station, args.kind, args.start, end, limiter, sensor_ids=sensors
             )
             storage.save_by_year(
                 frame, source, "city", "start_utc", ["location_id", "sensor_id", "start_utc"]
@@ -142,6 +152,11 @@ def cmd_fires(args) -> None:
             log(f"{year}: {len(frame)} fire detections")
 
 
+def cmd_pull(args) -> None:
+    path = storage.pull_from_hub()
+    log(f"Downloaded raw data from Hugging Face into {path}")
+
+
 def cmd_upload(args) -> None:
     url = storage.upload_to_hub(message=args.message)
     log(f"Uploaded to {url}")
@@ -181,6 +196,9 @@ def build_parser() -> argparse.ArgumentParser:
     add_common(p, today - timedelta(days=7))
     p.add_argument("--refresh", action="store_true", help="re-fetch years already saved")
     p.set_defaults(func=cmd_fires)
+
+    p = sub.add_parser("pull", help="download the raw data from the Hugging Face dataset")
+    p.set_defaults(func=cmd_pull)
 
     p = sub.add_parser("upload", help="copy data/raw to the Hugging Face dataset")
     p.add_argument("--message", default="Update data")

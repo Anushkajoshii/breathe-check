@@ -48,7 +48,7 @@ def read_source(source: str, root: Path | None = None) -> pd.DataFrame:
 
 
 def upload_to_hub(folder: Path | None = None, message: str = "Update data") -> str:
-    """Copy data/raw (and data/clean, if built) to the Hugging Face dataset."""
+    """Copy data/raw, and data/clean and data/public if built, to the Hugging Face dataset."""
     from huggingface_hub import HfApi
 
     api = HfApi(token=settings.need("HF_TOKEN"))
@@ -72,6 +72,16 @@ def upload_to_hub(folder: Path | None = None, message: str = "Update data") -> s
             allow_patterns=["*.parquet"],
             commit_message=message,
         )
+    public = settings.DATA_DIR / "public"
+    if folder is None and public.exists():
+        api.upload_folder(
+            repo_id=repo_id,
+            repo_type="dataset",
+            folder_path=str(public),
+            path_in_repo="public",
+            allow_patterns=["*.json", "**/*.json", "*.ics", "**/*.ics"],
+            commit_message=message,
+        )
     card = settings.ROOT / "docs" / "hf-dataset-card.md"
     if card.exists():
         api.upload_file(
@@ -82,3 +92,19 @@ def upload_to_hub(folder: Path | None = None, message: str = "Update data") -> s
             commit_message="Update dataset card",
         )
     return f"https://huggingface.co/datasets/{repo_id}"
+
+
+def pull_from_hub(patterns: tuple[str, ...] = ("raw/*", "raw/**")) -> Path:
+    """Download the raw data from the Hugging Face dataset into data/, so a fresh
+    machine (like the daily GitHub Actions job) can carry on from where we left off."""
+    from huggingface_hub import snapshot_download
+
+    repo_id = settings.get("HF_DATASET_REPO", "Anushkajoshii/breathe-check-data")
+    snapshot_download(
+        repo_id=repo_id,
+        repo_type="dataset",
+        local_dir=str(settings.DATA_DIR),
+        allow_patterns=list(patterns),
+        token=settings.get("HF_TOKEN") or None,
+    )
+    return settings.DATA_DIR
