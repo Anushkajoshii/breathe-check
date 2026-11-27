@@ -1,0 +1,54 @@
+version: 2
+
+models:
+  - name: stg_grap_daily
+    config:
+      reference_dir: "{{ var('reference_dir') }}"
+    columns:
+      - name: date
+        tests: [unique, not_null]
+      - name: grap_stage
+        tests:
+          - accepted_values:
+              arguments:
+                values: [0, 1, 2, 3, 4]
+                quote: false
+
+  - name: stg_cities
+    columns:
+      - name: slug
+        tests: [unique, not_null]
+
+  - name: int_air_daily_flagged
+    description: Daily station readings with one yes/no column per cleaning rule.
+
+  - name: int_air_hourly_flagged
+    description: Hourly station readings with one yes/no column per cleaning rule.
+
+  - name: city_day
+    description: One row per city per day. The main analysis table.
+    columns:
+      - name: city
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_cities')
+                field: slug
+      - name: date
+        tests: [not_null]
+      - name: grap_stage
+        tests:
+          - accepted_values:
+              arguments:
+                values: [0, 1, 2, 3, 4]
+                quote: false
+
+  - name: city_hour
+    description: One row per city per hour, Feb 2025 onwards.
+
+  - name: quality_report
+    description: How many readings each cleaning rule caught.
+
+  - name: station_quality
+    description: Share of usable days per station.

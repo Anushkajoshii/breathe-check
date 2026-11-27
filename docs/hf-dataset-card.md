@@ -30,6 +30,9 @@ Updated daily by a GitHub Actions job.
 | `raw/weather/<city>/<year>.parquet` | Hourly weather at each city centre, 2018 onwards | Open-Meteo (ERA5) |
 | `raw/weather_forecast/<city>/<year>.parquet` | Last 7 days plus the next 2 days | Open-Meteo |
 | `raw/fires/punjab_haryana/<year>.parquet` | Satellite fire detections in Punjab and Haryana | NASA FIRMS (VIIRS) |
+| `clean/city_day.parquet` | One row per city per day: cleaned PM2.5, weather, GRAP stage, Diwali, crop fires | Built by the project's dbt rules |
+| `clean/city_hour.parquet` | One row per city per hour (Feb 2025 onwards): cleaned PM2.5 and weather | Built by the project's dbt rules |
+| `clean/station_quality.parquet` | Share of usable days per station | Built by the project's dbt rules |
 
 ## Read it with DuckDB
 
@@ -42,7 +45,7 @@ GROUP BY ALL ORDER BY month;
 ## Important limits
 
 - OpenAQ has almost no CPCB data from November 2022 to February 2025.
-- These are raw readings. Stuck sensors and spikes are flagged later in the project, not removed here.
+- Files in `raw/` are untouched readings. Files in `clean/` leave out readings that break the [cleaning rules](https://github.com/Anushkajoshii/breathe-check/blob/main/docs/cleaning-rules.md).
 - Each source keeps its own licence: CPCB (Government of India) via OpenAQ, Open-Meteo (CC BY 4.0), NASA FIRMS. Please credit them.
 
 Full details: [data card](https://github.com/Anushkajoshii/breathe-check/blob/main/docs/data-card.md).

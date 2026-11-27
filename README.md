@@ -25,7 +25,7 @@ Extras:
 |---|---|---|
 | Collect | Hourly PM2.5 from government (CPCB) stations, hourly weather, crop-fire counts | OpenAQ, Open-Meteo, NASA FIRMS |
 | Store | Daily Parquet files in a public dataset | Hugging Face Datasets |
-| Clean | Flag stuck sensors, impossible jumps and gaps; every rule is a tested check | dbt + DuckDB |
+| Clean | Flag stuck sensors, zeros, impossible jumps and gaps; every rule is a tested check ([rules](docs/cleaning-rules.md)) | dbt + DuckDB |
 | Analyse | Remove the weather effect, then test whether GRAP worked | LightGBM, statsmodels, synthetic control |
 | Share | A full write-up with charts, a run-window web app, a calendar feed | Quarto on GitHub Pages, Vercel, iCalendar |
 
@@ -52,6 +52,7 @@ Copy `.env.example` to `.env` and add your free API keys (the file says where to
 make stations      # find government PM2.5 stations near each city
 make backfill      # full history (about an hour, because of API limits)
 make daily         # just the last week; this is what the daily job runs
+make clean-data    # run the cleaning rules and build the analysis tables
 ```
 
 You can also skip collecting and read the public dataset on Hugging Face directly.

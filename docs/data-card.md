@@ -24,7 +24,7 @@ Columns: `city, location_id, sensor_id, period, start_utc, start_local, value, m
 
 - **The big gap.** OpenAQ has almost no CPCB data from **November 2022 to February 2025**. CPCB stations were given new sensor IDs in February 2025, and the months in between are missing. That gap covers three winters (2022-23, 2023-24 and 2024-25). We still have four winters under the original GRAP (2018-19 to 2021-22) and the winters from 2025-26 on under the revised GRAP. The analysis says clearly which winters it uses.
 - **Uneven coverage.** Delhi has 42 stations. Indore has 6, and only one of them (Pithampur industrial area, about 25 km out) has history before 2025.
-- **Typical sensor faults.** Stuck values, sudden spikes, long gaps and negative numbers. These are flagged in Part 4, never silently deleted.
+- **Typical sensor faults.** Stuck values, sudden spikes, long gaps, zeros and negative numbers. Each is flagged by a tested rule, never silently deleted. See [cleaning rules](cleaning-rules.md) for what each rule caught.
 
 ## 2. Weather
 
