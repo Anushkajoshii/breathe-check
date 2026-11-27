@@ -149,3 +149,12 @@ p { margin: 6px 0; }
   .chart .axis { font-size: 20px; }
   .chart .line { stroke-width: 4; }
 }
+
+.cal-buttons { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+.button {
+  display: inline-flex; align-items: center; min-height: 40px; padding: 8px 14px; border-radius: 10px;
+  background: var(--series); color: #fff; font: inherit; font-size: 0.95rem; font-weight: 600;
+  text-decoration: none; border: 1px solid var(--series); cursor: pointer;
+}
+.button:hover { filter: brightness(1.08); }
+.button-quiet { background: transparent; color: var(--series); }
