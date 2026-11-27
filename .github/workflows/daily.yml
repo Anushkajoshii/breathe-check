@@ -1,0 +1,53 @@
+name: Daily update
+
+# Every evening at 7 pm India time (13:30 UTC): fetch the last week of data,
+# clean it, make tomorrow's forecasts and upload everything to Hugging Face.
+# It can also be started by hand from the Actions tab ("Run workflow").
+on:
+  schedule:
+    - cron: "30 13 * * *"
+  workflow_dispatch:
+
+# never run two updates at once
+concurrency:
+  group: daily-update
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    env:
+      OPENAQ_API_KEY: ${{ secrets.OPENAQ_API_KEY }}
+      FIRMS_MAP_KEY: ${{ secrets.FIRMS_MAP_KEY }}
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      HF_DATASET_REPO: Anushkajoshii/breathe-check-data
+      # the daily run is short, so it can use more of OpenAQ's 60-a-minute limit
+      OPENAQ_PER_MINUTE: "50"
+      HF_HUB_DISABLE_PROGRESS_BARS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+      - name: Install
+        run: uv sync
+      - name: Check the keys are set
+        run: |
+          for name in OPENAQ_API_KEY FIRMS_MAP_KEY HF_TOKEN; do
+            if [ -z "${!name}" ]; then echo "::error::GitHub secret $name is missing"; exit 1; fi
+          done
+      - name: Fetch, clean, forecast, upload
+        run: uv run python -m breathe_check.daily
+      - name: Show the status
+        if: always()
+        run: cat data/public/status.json || true
+      - name: Keep the status file
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: status
+          path: data/public/status.json
+          if-no-files-found: ignore
+          retention-days: 14
