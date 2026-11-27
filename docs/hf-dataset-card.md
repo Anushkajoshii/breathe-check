@@ -18,7 +18,7 @@ size_categories:
 Public data behind [Breathe Check](https://github.com/Anushkajoshii/breathe-check), a project that asks:
 did Delhi's GRAP pollution rules actually work, is Indore's air as clean as its streets, and when is it safest to run outside?
 
-Updated daily by a GitHub Actions job.
+Updated every evening at 7 pm India time by a GitHub Actions job.
 
 ## Files
 
@@ -38,6 +38,9 @@ Updated daily by a GitHub Actions job.
 | `clean/city_season_summary.parquet` | Each city and full year (July-June): average PM2.5, days over India's and WHO's limits, cigarette equivalent | Project analysis |
 | `clean/weather_fair_ranking.parquet` | Each city vs one shared weather model, 2025-26 | Project analysis |
 | `clean/grap_*.parquet` | GRAP event-study, placebo and synthetic-control results | Project analysis |
+| `public/forecast/<city>.json` | Tomorrow's hourly PM2.5 forecast (low, middle, high), best 2-hour window, last-24-hours card, smoke check | Made every evening |
+| `public/forecast/index.json` | List of cities and their best windows | Made every evening |
+| `public/status.json` | When the last daily update ran, what worked, and how fresh each source is | Made every evening |
 
 ## Read it with DuckDB
 

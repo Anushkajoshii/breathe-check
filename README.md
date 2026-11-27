@@ -68,6 +68,10 @@ make clean-data    # run the cleaning rules and build the analysis tables
 
 You can also skip collecting and read the public dataset on Hugging Face directly.
 
+## How it stays fresh
+
+Every evening at 7 pm India time, a GitHub Actions job fetches the last week of data, cleans it, makes tomorrow's forecasts and uploads them to Hugging Face. It needs no server and costs nothing. See [the daily update](docs/daily-update.md).
+
 ## Known limitations
 
 - Monitoring stations are not spread evenly. Some cities have one or two, so one bad sensor can skew a whole city.
