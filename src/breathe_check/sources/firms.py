@@ -58,11 +58,25 @@ def parse_csv(text: str) -> pd.DataFrame:
     return frame
 
 
-def sp_last_day(client: httpx.Client, key: str, source: str = "VIIRS_SNPP_SP") -> date:
-    """The last day the standard (final) data covers."""
-    response = get_with_retry(client, f"{BASE_URL}/data_availability/csv/{key}/{source}")
+def last_days(client: httpx.Client, key: str) -> dict[str, date]:
+    """The last day each FIRMS data source covers, e.g. {"VIIRS_SNPP_SP": 2026-08-31}."""
+    response = get_with_retry(client, f"{BASE_URL}/data_availability/csv/{key}/all")
     frame = pd.read_csv(io.StringIO(response.text))
-    return date.fromisoformat(str(frame["max_date"].iloc[0]))
+    return {row.data_id: date.fromisoformat(str(row.max_date)) for row in frame.itertuples()}
+
+
+def pick_source(chunk_end: date, last: dict[str, date]) -> str:
+    """Which satellite feed to use for a chunk of days.
+
+    Suomi NPP is the long, consistent record (final data, then near-real-time).
+    Its near-real-time feed stopped on 2 November 2026, so for later days we use
+    NOAA-20, which carries the same VIIRS instrument.
+    """
+    if chunk_end <= last.get("VIIRS_SNPP_SP", date.min):
+        return "VIIRS_SNPP_SP"
+    if chunk_end <= last.get("VIIRS_SNPP_NRT", date.min):
+        return "VIIRS_SNPP_NRT"
+    return "VIIRS_NOAA20_NRT"
 
 
 def date_chunks(start: date, end: date, size: int = MAX_DAYS_PER_CALL):
@@ -84,12 +98,10 @@ def fetch_fires(
     """All fire detections in a region between two dates (inclusive)."""
     west, south, east, north = REGIONS[region]
     area = f"{west},{south},{east},{north}"
-    cutoff = sp_last_day(client, key)
+    last = last_days(client, key)
     parts = []
     for first_day, days in date_chunks(start, end):
-        source = (
-            "VIIRS_SNPP_SP" if first_day + timedelta(days=days - 1) <= cutoff else "VIIRS_SNPP_NRT"
-        )
+        source = pick_source(first_day + timedelta(days=days - 1), last)
         url = f"{BASE_URL}/area/csv/{key}/{source}/{area}/{days}/{first_day.isoformat()}"
         frame = parse_csv(get_csv(client, url, sleep=sleep))
         if not frame.empty:

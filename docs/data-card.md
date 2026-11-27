@@ -45,7 +45,7 @@ Why it matters: when the wind is calm and the mixing height is low, pollution ha
 | What | Every fire the VIIRS satellite (Suomi NPP) detected |
 | Source | [NASA FIRMS](https://firms.modaps.eosdis.nasa.gov/) area API |
 | Where | A box around Punjab and Haryana: longitude 73.8 to 77.6, latitude 27.6 to 32.6 |
-| Versions | Standard data (final) where available, near-real-time data for the last 2 to 3 months |
+| Versions | Suomi NPP standard data (final) where available, then Suomi NPP near-real-time. That feed stopped on 2 November 2026, so later days come from NOAA-20 near-real-time (same VIIRS instrument). The `source` column says which. |
 | Files | `raw/fires/punjab_haryana/<year>.parquet` |
 | Licence | NASA data is free to use. Please credit NASA FIRMS. |
 
