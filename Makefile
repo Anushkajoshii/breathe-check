@@ -1,4 +1,4 @@
-.PHONY: setup test lint format clean stations backfill daily upload clean-data docs-data figures
+.PHONY: setup test lint format clean stations backfill daily upload clean-data docs-data figures models
 
 setup:        ## install everything and turn on pre-commit
 	uv sync
@@ -50,3 +50,6 @@ docs-data:    ## open dbt's browsable docs for the tables
 
 figures:      ## draw the charts in reports/figures from the clean tables
 	uv run python analysis/first_look.py
+
+models:       ## train the weather-only models and save weather-adjusted PM2.5
+	uv run python analysis/deweather.py

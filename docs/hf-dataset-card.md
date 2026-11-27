@@ -33,6 +33,8 @@ Updated daily by a GitHub Actions job.
 | `clean/city_day.parquet` | One row per city per day: cleaned PM2.5, weather, GRAP stage, Diwali, crop fires | Built by the project's dbt rules |
 | `clean/city_hour.parquet` | One row per city per hour (Feb 2025 onwards): cleaned PM2.5 and weather | Built by the project's dbt rules |
 | `clean/station_quality.parquet` | Share of usable days per station | Built by the project's dbt rules |
+| `clean/city_day_adjusted.parquet` | Weather-adjusted PM2.5: actual, what the weather predicts, and the ratio | LightGBM weather-only model per city |
+| `clean/deweather_scores.parquet` | How well each city's weather model predicts seasons it never saw | Same |
 
 ## Read it with DuckDB
 
