@@ -1,0 +1,86 @@
+order_date,action,stage,note,source_url,checked_against,needs_review
+2022-10-05,invoke,1,First season of revised GRAP,https://grapinfo.com/grap-orders.php,tracker,no
+2022-10-19,invoke,2,,https://grapinfo.com/grap-orders.php,tracker,no
+2022-10-29,invoke,3,,https://grapinfo.com/grap-orders.php,tracker,no
+2022-11-03,invoke,4,,https://grapinfo.com/grap-orders.php,tracker,no
+2022-11-06,revoke,4,,https://grapinfo.com/grap-orders.php,tracker,no
+2022-11-14,revoke,3,,https://grapinfo.com/grap-orders.php,tracker,no
+2022-12-04,invoke,3,Corrigendum issued the same day,https://grapinfo.com/grap-orders.php,tracker,no
+2022-12-07,revoke,3,,https://grapinfo.com/grap-orders.php,tracker,no
+2022-12-30,invoke,3,Revised order on 2022-12-31,https://grapinfo.com/grap-orders.php,tracker,no
+2023-01-04,revoke,3,,https://grapinfo.com/grap-orders.php,tracker,no
+2023-01-06,invoke,3,,https://grapinfo.com/grap-orders.php,tracker,no
+2023-01-15,revoke,3,,https://grapinfo.com/grap-orders.php,tracker,no
+2023-02-01,revoke,2,,https://grapinfo.com/grap-orders.php,tracker,no
+2023-02-16,invoke,2,,https://grapinfo.com/grap-orders.php,tracker,no
+2023-03-01,revoke,2,,https://grapinfo.com/grap-orders.php,tracker,no
+2023-03-09,revoke,1,End of 2022-23 season,https://grapinfo.com/grap-orders.php,tracker,no
+2023-10-06,invoke,1,,https://grapinfo.com/grap-orders.php,tracker,no
+2023-10-21,invoke,2,,https://grapinfo.com/grap-orders.php,tracker,no
+2023-11-02,invoke,3,,https://grapinfo.com/grap-orders.php,tracker,no
+2023-11-05,invoke,4,,https://grapinfo.com/grap-orders.php,tracker,no
+2023-11-18,revoke,4,,https://grapinfo.com/grap-orders.php,tracker,no
+2023-11-28,revoke,3,Tracker leaves stage blank; order title says Stage III,https://grapinfo.com/grap-orders.php,tracker,yes
+2023-12-22,invoke,3,,https://grapinfo.com/grap-orders.php,tracker,no
+2024-01-01,revoke,3,,https://caqm.nic.in/WriteReadData/LINKS/6b805a5e-c2a9-44b4-9db8-a971acb2b317.pdf,caqm_pdf_link,no
+2024-01-14,invoke,3,,https://grapinfo.com/grap-orders.php,tracker,no
+2024-01-18,revoke,3,,https://grapinfo.com/grap-orders.php,tracker,no
+2024-02-19,revoke,2,,https://grapinfo.com/grap-orders.php,tracker,no
+2024-02-27,revoke,1,End of 2023-24 season,https://grapinfo.com/grap-orders.php,tracker,no
+2024-10-14,invoke,1,,https://grapinfo.com/grap-orders.php,tracker,no
+2024-10-21,invoke,2,,https://grapinfo.com/grap-orders.php,tracker,no
+2024-11-14,invoke,3,,https://www.newsonair.gov.in/stage-iii-of-grap-invokes-in-delhi-to-fight-pollution,public_broadcaster,no
+2024-11-17,invoke,4,,https://grapinfo.com/grap-orders.php,tracker,no
+2024-12-05,revoke,4,Same order also revoked Stage III,https://grapinfo.com/grap-orders.php,tracker,no
+2024-12-05,revoke,3,Tracker list shows only Stage IV; order title covers III and IV,https://grapinfo.com/grap-orders.php,tracker,yes
+2024-12-16,invoke,3,,https://grapinfo.com/grap-orders.php,tracker,no
+2024-12-16,invoke,4,,https://grapinfo.com/grap-orders.php,tracker,no
+2024-12-24,revoke,4,,https://www.newsonair.gov.in/caqm-revokes-stage-iv-of-grap-in-delhi-ncr-as-air-quality-shows-improvement,public_broadcaster,no
+2024-12-27,revoke,3,,https://grapinfo.com/grap-orders.php,tracker,no
+2025-01-03,invoke,3,,https://grapinfo.com/grap-orders.php,tracker,no
+2025-01-05,revoke,3,,https://grapinfo.com/grap-orders.php,tracker,no
+2025-01-09,invoke,3,,https://grapinfo.com/grap-orders.php,tracker,no
+2025-01-12,revoke,3,,https://grapinfo.com/grap-orders.php,tracker,no
+2025-01-15,invoke,3,,https://grapinfo.com/grap-orders.php,tracker,no
+2025-01-15,invoke,4,Tracker list shows only Stage III; order title covers III and IV,https://grapinfo.com/grap-orders.php,tracker,yes
+2025-01-16,revoke,4,,https://grapinfo.com/grap-orders.php,tracker,no
+2025-01-17,revoke,3,,https://grapinfo.com/grap-orders.php,tracker,no
+2025-01-29,invoke,3,,https://grapinfo.com/grap-orders.php,tracker,no
+2025-02-03,revoke,3,,https://grapinfo.com/grap-orders.php,tracker,no
+2025-02-24,revoke,2,,https://caqm.nic.in/WriteReadData/LINKS/GRAP%20Order2fc1567a-f42d-425d-83a4-852bafea7a63.pdf,caqm_pdf_link,no
+2025-03-03,revoke,1,,https://grapinfo.com/grap-orders.php,tracker,no
+2025-03-07,invoke,1,,https://grapinfo.com/grap-orders.php,tracker,no
+2025-03-15,revoke,1,,https://grapinfo.com/grap-orders.php,tracker,no
+2025-03-24,invoke,1,,https://grapinfo.com/grap-orders.php,tracker,no
+2025-03-29,revoke,1,,https://caqm.nic.in/WriteReadData/LINKS/GRAP%20order%20dt%20290320258e790be7-e8af-46ae-ab48-eb52c240b2cb.pdf,caqm_pdf_link,no
+2025-04-02,invoke,1,,https://caqm.nic.in/WriteReadData/LINKS/f86af728-3df7-45e8-88ca-03d71c9a7939.pdf,caqm_pdf_link,no
+2025-05-01,revoke,1,,https://grapinfo.com/grap-orders.php,tracker,no
+2025-05-16,invoke,1,,https://grapinfo.com/grap-orders.php,tracker,no
+2025-05-18,revoke,1,,https://grapinfo.com/grap-orders.php,tracker,no
+2025-05-21,invoke,1,,https://grapinfo.com/grap-orders.php,tracker,no
+2025-05-23,revoke,1,,https://caqm.nic.in/WriteReadData/LINKS/GRAP%20Order%20dt%202305202591045271-02b6-4d2e-aa4b-fa04ea65883a.pdf,caqm_pdf_link,no
+2025-06-07,invoke,1,,https://grapinfo.com/grap-orders.php,tracker,no
+2025-06-15,revoke,1,,https://grapinfo.com/grap-orders.php,tracker,no
+2025-10-14,invoke,1,,https://grapinfo.com/grap-orders.php,tracker,no
+2025-10-19,invoke,2,Date confirmed in the PIB release that later revoked Stage II,https://www.pib.gov.in/PressReleasePage.aspx?PRID=2229760&reg=3&lang=1,pib,no
+2025-11-11,invoke,3,Nine-point action plan across NCR,https://www.pib.gov.in/PressReleasePage.aspx?PRID=2188873&reg=48&lang=2,pib,no
+2025-11-26,revoke,3,Stages I and II tightened instead,https://grapinfo.com/grap-orders.php,tracker,no
+2025-12-13,invoke,3,,https://grapinfo.com/grap-orders.php,tracker,no
+2025-12-13,invoke,4,,https://grapinfo.com/grap-orders.php,tracker,no
+2025-12-24,revoke,4,,https://grapinfo.com/grap-orders.php,tracker,no
+2026-01-02,revoke,3,,https://grapinfo.com/grap-orders.php,tracker,no
+2026-01-16,invoke,3,,https://grapinfo.com/grap-orders.php,tracker,no
+2026-01-17,invoke,4,,https://grapinfo.com/grap-orders.php,tracker,no
+2026-01-20,revoke,4,,https://grapinfo.com/grap-orders.php,tracker,no
+2026-01-22,revoke,3,,https://caqm.nic.in/WriteReadData/LINKS/GRAP%20Order%20dated%20220120265838a44f-e5d0-4f6a-8f73-390ef0d3966d.pdf,caqm_pdf_link,no
+2026-02-18,revoke,2,,https://caqm.nic.in/WriteReadData/LINKS/GRAP%20Order%20dated%2018022026692f79de-066f-4e14-9336-11690157a560.pdf,caqm_pdf_link,no
+2026-03-16,revoke,1,Improvement put down to favourable weather,https://grapinfo.com/grap-orders.php,tracker,no
+2026-04-16,invoke,1,,https://grapinfo.com/grap-orders.php,tracker,no
+2026-05-04,revoke,1,,https://caqm.nic.in/WriteReadData/LINKS/GRAP%20Order%20dt%040520265bec8f49-0a2b-4e99-a35a-fa8bbc9f3fa8.pdf,caqm_pdf_link,no
+2026-05-19,invoke,1,,https://caqm.nic.in/WriteReadData/LINKS/GRAP%20Order%20dt%20190520264bc6a704-b069-4779-86d7-f0aeed5cd149.pdf,caqm_pdf_link,no
+2026-05-29,revoke,1,,https://caqm.nic.in/WriteReadData/LINKS/GRAP%20Stage%20I%20Revocation%20Order%2029052026996e5190-fa00-43c9-bb1c-6a0a70a548ee.pdf,caqm_pdf_link,no
+2026-10-21,invoke,1,Only news-detected on the tracker; Delhi AQI was 117 on 31 Oct,https://grapinfo.com/grap-orders.php,news_only,yes
+2026-11-02,invoke,1,Same order switched on Stages I and II,https://www.indiatvnews.com/delhi/grap-stage-ii-invoked-across-delhi-ncr-which-vehicles-are-not-allowed-what-else-is-banned-under-new-rules-2026-11-02-1058517,news,no
+2026-11-02,invoke,2,Delhi AQI 324,https://www.indiatvnews.com/delhi/grap-stage-ii-invoked-across-delhi-ncr-which-vehicles-are-not-allowed-what-else-is-banned-under-new-rules-2026-11-02-1058517,news,no
+2026-11-06,invoke,3,Precautionary; severe forecast for 7-9 Nov (Diwali),https://www.businesstoday.in/india/story/caqm-invokes-grap-stage-iii-in-delhi-ncr-as-air-quality-deteriorates-ahead-of-diwali-566278-2026-11-06,news,no
+2026-11-17,revoke,3,Delhi AQI 204; Stages I and II continue,https://www.pib.gov.in/PressReleseDetailm.aspx?PRID=2337619&reg=48&lang=2,pib,no
