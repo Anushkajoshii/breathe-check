@@ -4,7 +4,7 @@ import time
 
 import httpx
 
-RETRY_STATUS = {429, 500, 502, 503, 504}
+RETRY_STATUS = {408, 429, 500, 502, 503, 504}
 
 
 def get_with_retry(

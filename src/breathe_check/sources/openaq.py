@@ -183,6 +183,45 @@ def iter_sensor_pages(
         page += 1
 
 
+def sensor_date_ranges(
+    client: httpx.Client, location_id: int, limiter: RateLimiter | None = None
+) -> dict[int, tuple[pd.Timestamp | None, pd.Timestamp | None]]:
+    """First and last reading time of each PM2.5 sensor at a station."""
+    if limiter:
+        limiter.wait()
+    payload = get_with_retry(client, f"/locations/{location_id}/sensors").json()
+    ranges = {}
+    for s in payload.get("results", []):
+        if s["parameter"]["id"] != PM25_PARAMETER_ID:
+            continue
+        first = (s.get("datetimeFirst") or {}).get("utc")
+        last = (s.get("datetimeLast") or {}).get("utc")
+        ranges[s["id"]] = (
+            pd.Timestamp(first) if first else None,
+            pd.Timestamp(last) if last else None,
+        )
+    return ranges
+
+
+def overlaps(rng, start, end) -> bool:
+    """Does a sensor's (first, last) range overlap [start, end]? Unknown means yes."""
+    first, last = rng
+    start, end = pd.Timestamp(start, tz="UTC"), pd.Timestamp(end, tz="UTC")
+    return (first is None or first <= end) and (last is None or last >= start)
+
+
+def month_windows(start, end) -> list[tuple[pd.Timestamp, pd.Timestamp]]:
+    """Split a time range into calendar months. Deep pages time out on OpenAQ,
+    so we ask for one month of hourly data at a time (one or two pages each)."""
+    start, end = pd.Timestamp(start), pd.Timestamp(end)
+    edges = [
+        start,
+        *pd.date_range(start.normalize() + pd.offsets.MonthBegin(1), end, freq="MS"),
+        end,
+    ]
+    return [(a, b) for a, b in zip(edges, edges[1:], strict=False) if a < b]
+
+
 def fetch_station(
     client: httpx.Client,
     station: Station,
@@ -190,13 +229,16 @@ def fetch_station(
     start: date | datetime,
     end: date | datetime,
     limiter: RateLimiter | None = None,
+    sensor_ids: tuple[int, ...] | None = None,
 ) -> pd.DataFrame:
-    """All PM2.5 readings for one station, from all of its sensors, as a table."""
+    """All PM2.5 readings for one station, from all (or the given) sensors, as a table."""
+    windows = month_windows(start, end) if kind == "hours" else [(start, end)]
     rows = []
-    for sensor_id in station.pm25_sensor_ids:
-        for page in iter_sensor_pages(client, sensor_id, kind, start, end, limiter):
-            for row in page:
-                rows.append({"sensor_id": sensor_id, **row})
+    for sensor_id in sensor_ids if sensor_ids is not None else station.pm25_sensor_ids:
+        for a, b in windows:
+            for page in iter_sensor_pages(client, sensor_id, kind, a, b, limiter):
+                for row in page:
+                    rows.append({"sensor_id": sensor_id, **row})
     frame = pd.DataFrame(rows)
     if frame.empty:
         return frame

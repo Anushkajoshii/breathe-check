@@ -91,3 +91,20 @@ def test_fetch_keeps_asking_while_pages_are_full(monkeypatch):
         for r in page
     ]
     assert [r["value"] for r in rows] == [1, 2, 3]
+
+
+def test_month_windows_split_on_month_edges():
+    windows = openaq.month_windows("2025-02-15", "2025-04-10")
+    assert [(str(a.date()), str(b.date())) for a, b in windows] == [
+        ("2025-02-15", "2025-03-01"),
+        ("2025-03-01", "2025-04-01"),
+        ("2025-04-01", "2025-04-10"),
+    ]
+
+
+def test_overlaps_skips_sensors_retired_before_the_range():
+    old = (pd.Timestamp("2018-03-01", tz="UTC"), pd.Timestamp("2022-10-31", tz="UTC"))
+    new = (pd.Timestamp("2025-02-18", tz="UTC"), pd.Timestamp("2026-11-27", tz="UTC"))
+    assert not openaq.overlaps(old, "2025-02-01", "2026-11-27")
+    assert openaq.overlaps(new, "2025-02-01", "2026-11-27")
+    assert openaq.overlaps((None, None), "2025-02-01", "2026-11-27")

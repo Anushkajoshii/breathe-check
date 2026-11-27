@@ -87,7 +87,16 @@ def cmd_air(args) -> None:
         for i, station in enumerate(chosen, 1):
             if str(station.location_id) in done:
                 continue
-            frame = openaq.fetch_station(client, station, args.kind, args.start, args.end, limiter)
+            sensors = None
+            if args.kind == "hours":
+                # Skip retired sensors so we don't ask for months they never covered
+                ranges = openaq.sensor_date_ranges(client, station.location_id, limiter)
+                sensors = tuple(
+                    sid for sid, rng in ranges.items() if openaq.overlaps(rng, args.start, args.end)
+                )
+            frame = openaq.fetch_station(
+                client, station, args.kind, args.start, args.end, limiter, sensor_ids=sensors
+            )
             storage.save_by_year(
                 frame, source, "city", "start_utc", ["location_id", "sensor_id", "start_utc"]
             )
