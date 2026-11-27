@@ -89,10 +89,16 @@ test("a clear message when the forecast can't load", async () => {
 
 test("calendar links point at the city's feed on this site", async () => {
   const { calendarLinks } = await import("./components/CalendarCard");
-  const links = calendarLinks("indore", "breathe-check-flax.vercel.app");
+  const links = calendarLinks("indore", "breathe-check-flax.vercel.app", "Indore");
   expect(links.https).toBe("https://breathe-check-flax.vercel.app/calendar/indore.ics");
   expect(links.webcal).toBe("webcal://breathe-check-flax.vercel.app/calendar/indore.ics");
   expect(links.google).toContain(encodeURIComponent("webcal://breathe-check-flax.vercel.app/calendar/indore.ics"));
+  expect(links.outlook).toBe(
+    "https://outlook.live.com/calendar/0/addfromweb?url=" +
+      encodeURIComponent("https://breathe-check-flax.vercel.app/calendar/indore.ics") +
+      "&name=" +
+      encodeURIComponent("Breathe Check: Indore"),
+  );
 });
 
 test("the calendar card shows under the forecast", async () => {
