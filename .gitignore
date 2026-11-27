@@ -13,6 +13,7 @@ __pycache__/
 data/raw/
 data/clean/
 data/cache/
+data/logs/
 *.db
 *.duckdb
 *.duckdb.wal
