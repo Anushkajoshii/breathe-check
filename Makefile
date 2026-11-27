@@ -1,4 +1,4 @@
-.PHONY: setup test lint format clean stations backfill daily upload clean-data docs-data figures models grap indore
+.PHONY: setup test lint format clean stations backfill daily upload clean-data docs-data figures models grap indore forecast run-window
 
 setup:        ## install everything and turn on pre-commit
 	uv sync
@@ -59,3 +59,9 @@ grap:         ## did GRAP work? event study, comparison cities, placebo, synthet
 
 indore:       ## Indore vs India's limits, WHO and its neighbours
 	uv run python analysis/indore.py
+
+forecast:     ## make tomorrow's run-window forecast for every city (data/public/forecast)
+	uv run python -m breathe_check.forecast
+
+run-window:   ## test the run-window forecast on recent months and draw its charts
+	uv run python analysis/run_window.py
