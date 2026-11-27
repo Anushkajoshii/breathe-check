@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+
+# Secrets
+.env
+
+# Data (real data lives on Hugging Face, not in git)
+data/raw/
+data/clean/
+data/cache/
+*.db
+*.duckdb
+*.duckdb.wal
+
+# Reports and builds
+reports/_site/
+reports/.quarto/
+web/node_modules/
+web/dist/
+
+# OS / editors
+.DS_Store
+.vscode/
+.idea/
