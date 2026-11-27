@@ -1,4 +1,4 @@
-.PHONY: setup test lint format clean stations backfill daily upload clean-data docs-data
+.PHONY: setup test lint format clean stations backfill daily upload clean-data docs-data figures
 
 setup:        ## install everything and turn on pre-commit
 	uv sync
@@ -47,3 +47,6 @@ clean-data:   ## run the cleaning rules and build the analysis tables (data/clea
 
 docs-data:    ## open dbt's browsable docs for the tables
 	$(DBT) docs generate --project-dir transform --profiles-dir transform && $(DBT) docs serve --project-dir transform --profiles-dir transform
+
+figures:      ## draw the charts in reports/figures from the clean tables
+	uv run python analysis/first_look.py
