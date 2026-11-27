@@ -63,12 +63,16 @@ def subtitle(ax, text: str) -> None:
     ax.text(0, 1.02, text, transform=ax.transAxes, color=TEXT_SECONDARY, fontsize=10, va="bottom")
 
 
-def limit_line(ax, y: float, label: str) -> None:
-    """A grey dashed reference line, labelled just above it at the left edge."""
+def limit_line(ax, y: float, label: str, x: float = 0.0) -> None:
+    """A grey dashed reference line, labelled just above it.
+
+    x is where the label starts, as a share of the chart width (0 = left edge).
+    Pick a spot where no data line passes just above the limit.
+    """
     ax.axhline(y, color=TEXT_MUTED, linewidth=1, linestyle=(0, (4, 3)), zorder=1)
     ax.annotate(
         label,
-        (0, y),
+        (x, y),
         xycoords=("axes fraction", "data"),
         xytext=(4, 3),
         textcoords="offset points",
@@ -76,6 +80,35 @@ def limit_line(ax, y: float, label: str) -> None:
         fontsize=8.5,
         va="bottom",
     )
+
+
+def cigarette_scale(ax) -> None:
+    """Relabel the right edge of a PM2.5 chart in cigarettes a day.
+
+    Same quantity, same scale (22 ug/m3 for a day = 1 cigarette, the Berkeley
+    Earth rule of thumb), so this is a second set of tick labels, not a second
+    measure.
+    """
+    from breathe_check.standards import PM25_PER_CIGARETTE
+
+    # Placed a little to the right of the plot, so the line-end labels have room
+    right = ax.secondary_yaxis(
+        1.16, functions=(lambda pm: pm / PM25_PER_CIGARETTE, lambda c: c * PM25_PER_CIGARETTE)
+    )
+    top = ax.get_ylim()[1] / PM25_PER_CIGARETTE
+    step = 1 if top <= 6 else 2 if top <= 12 else 4
+    right.set_yticks(range(0, int(top) + 1, step))
+    right.set_ylabel("Cigarettes a day (rough)", color=TEXT_SECONDARY)
+    right.tick_params(colors=TEXT_SECONDARY, length=0)
+    right.spines["right"].set_visible(False)
+
+
+def round_bars(bars, radius: float = 2.5) -> None:
+    """Give bars slightly rounded corners by stroking them in their own colour."""
+    for bar in bars:
+        bar.set_edgecolor(bar.get_facecolor())
+        bar.set_linewidth(radius)
+        bar.set_joinstyle("round")
 
 
 def end_label(ax, x, y, text: str, color: str) -> None:

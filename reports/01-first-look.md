@@ -4,6 +4,10 @@ What the cleaned data shows before any modelling. These are plain averages, so w
 
 Make the charts yourself: `make figures`.
 
+**How to read the charts**
+- Grey dashed lines are limits: India's daily limit (60 µg/m³) and the WHO daily guideline (15).
+- The right-hand scale on the month and Diwali charts turns PM2.5 into cigarettes a day, using the Berkeley Earth rule of thumb that 22 µg/m³ for a day is about one cigarette. It's a rough comparison, not a medical measure.
+
 ## 1. A three-year hole in the record
 
 ![Stations reporting over time](figures/01_station_coverage.png)

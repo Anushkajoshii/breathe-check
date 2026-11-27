@@ -49,18 +49,24 @@ def plot_station_coverage(table: pd.DataFrame):
         style.end_label(ax, last["month"], last["n_stations"], group, color)
     gap_start, gap_end = pd.Timestamp("2022-11-01"), pd.Timestamp("2025-02-01")
     ax.axvspan(gap_start, gap_end, color=style.GRID, alpha=0.6, linewidth=0)
+    ax.set_ylim(bottom=0)
     ax.text(
         gap_start + (gap_end - gap_start) / 2,
-        ax.get_ylim()[1] * 0.92,
-        "No CPCB data on OpenAQ",
+        ax.get_ylim()[1] * 0.55,
+        "No CPCB data\non OpenAQ\n(Nov 2022 to\nFeb 2025)",
         ha="center",
+        va="center",
         color=style.TEXT_SECONDARY,
         fontsize=9,
+        linespacing=1.4,
     )
-    ax.set_ylim(bottom=0)
     ax.set_ylabel("Usable stations per day")
     ax.set_title("A three-year hole in the record", pad=22)
-    style.subtitle(ax, "Stations with a usable daily reading, averaged by month.")
+    style.subtitle(
+        ax,
+        "Stations with a usable daily reading, averaged by month. "
+        "Drops to zero in 2018-2021 are months OpenAQ has almost nothing for.",
+    )
     style.source_note(fig)
     return fig
 
@@ -84,8 +90,9 @@ def plot_monthly_profile(table: pd.DataFrame, cities: list[str]):
     ax.set_xticks(range(1, 13), MONTHS)
     ax.set_xlim(0.7, 12.3)
     ax.set_ylim(bottom=0)
-    style.limit_line(ax, INDIA_DAILY_PM25, "India daily limit (60)")
+    style.limit_line(ax, INDIA_DAILY_PM25, "India daily limit (60)", x=0.47)
     style.limit_line(ax, WHO_DAILY_PM25, "WHO daily guideline (15)")
+    style.cigarette_scale(ax)
     ax.set_ylabel("PM2.5 (µg/m³), average day")
     ax.set_title("Winter is the problem everywhere, but most in Delhi", pad=22)
     style.subtitle(ax, "Average daily PM2.5 by month, all years with data (2018-2022, 2025-2026).")
@@ -194,6 +201,7 @@ def plot_diwali(window: pd.DataFrame, cities: list[str]):
     ax.set_xticks(range(-10, 11, 2))
     ax.set_ylim(bottom=0)
     style.limit_line(ax, INDIA_DAILY_PM25, "India daily limit (60)")
+    style.cigarette_scale(ax)
     ax.set_xlabel("Days from Diwali")
     ax.set_ylabel("PM2.5 (µg/m³), average day")
     ax.set_title("The day after Diwali is the dirtiest day of the window", pad=22)
@@ -237,17 +245,18 @@ def plot_fires_and_wind(table: pd.DataFrame):
     for i, (color, wind) in enumerate(zip(style.SERIES, winds, strict=False)):
         part = table[table["wind"] == wind].set_index("fires_bin").reindex(FIRE_LABELS)
         bars = ax.bar(
-            x + (i - 0.5) * (width + 0.02), part["pm25"], width, color=color, label=wind, zorder=3
+            x + (i - 0.5) * (width + 0.04), part["pm25"], width, color=color, label=wind, zorder=3
         )
+        style.round_bars(bars)
         for bar, days in zip(bars, part["days"], strict=True):
             if days and not np.isnan(bar.get_height()):
                 ax.text(
                     bar.get_x() + bar.get_width() / 2,
-                    bar.get_height() + 3,
-                    f"{days} d",
+                    bar.get_height() + 6,
+                    f"{days} days",
                     ha="center",
-                    fontsize=8,
-                    color=style.TEXT_MUTED,
+                    fontsize=9,
+                    color=style.TEXT_SECONDARY,
                 )
     ax.set_xticks(x, FIRE_LABELS)
     ax.set_xlabel("Crop fires seen in Punjab and Haryana the day before")
@@ -283,13 +292,14 @@ def plot_mixing_height(table: pd.DataFrame):
     fig, ax = plt.subplots(figsize=(9, 4.2))
     labels = [f"~{int(round(m, -1))} m" for m in table["mixing_m"]]
     bars = ax.bar(range(len(table)), table["pm25"], 0.62, color=style.SERIES[0], zorder=3)
+    style.round_bars(bars)
     for bar, value in zip(bars, table["pm25"], strict=True):
         ax.text(
             bar.get_x() + bar.get_width() / 2,
             bar.get_height() + 4,
             f"{value:.0f}",
             ha="center",
-            fontsize=9,
+            fontsize=10,
             color=style.TEXT,
         )
     ax.set_xticks(range(len(table)), labels)
