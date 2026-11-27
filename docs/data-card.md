@@ -51,7 +51,12 @@ Why it matters: when the wind is calm and the mixing height is low, pollution ha
 
 ## 4. Small reference files (kept in this repo)
 
-Coming in Part 3: GRAP stage start and end dates with a link to each CAQM order, and Diwali dates by year.
+In [`reference/`](../reference/README.md):
+- `grap_orders.csv`: 85 revised-GRAP stage orders (October 2022 to November 2026), each with a source link and a note on how well it's backed up.
+- `grap_original_seasons.csv`: the original GRAP season window (15 October to 15 March), 2017-18 to 2021-22.
+- `diwali.csv`: Diwali date for each year, 2018 to 2026.
+
+Four rows are marked `needs_review`, where the sources disagree. The analysis is run with and without them.
 
 ## Privacy
 
