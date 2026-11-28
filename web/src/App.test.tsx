@@ -52,7 +52,7 @@ const status: Status = { started_at: "", finished_at: "", ok: true, steps: {}, d
 
 function mockFetch(files: Record<string, unknown>) {
   globalThis.fetch = vi.fn(async (url: string | URL | Request) => {
-    const path = String(url).split("/public/")[1].split("?")[0];
+    const path = String(url).replace(/^.*\/data\//, "").split("?")[0];
     const body = files[path];
     return body
       ? new Response(JSON.stringify(body), { status: 200 })
@@ -133,4 +133,15 @@ test("the footer carries the copyright", async () => {
   mockFetch({ "forecast/index.json": index, "forecast/indore.json": indore, "status.json": status });
   render(<App />);
   expect(await screen.findByText(/© \d{4} Anushka Joshi/)).toBeInTheDocument();
+});
+
+test("the app links nowhere outside itself except calendar services", async () => {
+  mockFetch({ "forecast/index.json": index, "forecast/indore.json": indore, "status.json": status });
+  render(<App />);
+  await screen.findByText("noon to 2 pm");
+  const external = [...document.querySelectorAll("a[href^='http']")]
+    .map((a) => a.getAttribute("href") ?? "")
+    .filter((h) => !/calendar\.google\.com|outlook\.live\.com/.test(h));
+  expect(external).toEqual([]);
+  expect(document.body.innerHTML).not.toMatch(/github|huggingface/i);
 });

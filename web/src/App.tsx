@@ -94,6 +94,7 @@ export default function App() {
         {!error && !forecast && <Skeleton />}
         {forecast && (
           <>
+            <div id="forecast" className="anchor" />
             <BestTime f={forecast} />
             <HourlyChart f={forecast} />
             {forecast.smoke ? (
@@ -104,6 +105,7 @@ export default function App() {
             ) : (
               <LastDay f={forecast} />
             )}
+            <div id="calendar" className="anchor" />
             <CalendarCard city={forecast.city} name={forecast.name} />
           </>
         )}

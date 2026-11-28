@@ -1,21 +1,23 @@
-MIT License
+Copyright (c) 2026 Anushka Joshi. All rights reserved.
 
-Copyright (c) 2026 Anushka Joshi
+This repository is published so that its work can be read and reviewed, for
+example by employers and collaborators. Publishing it does not grant any licence.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+Without prior written permission from the copyright holder, you may not copy,
+modify, merge, publish, distribute, sublicense, sell, deploy or otherwise use
+this software, its documentation, its analysis, its charts or its trained models,
+in whole or in part.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+You may view the source on GitHub and run it on your own machine solely to
+evaluate it.
+
+Third-party data used by this project (CPCB readings via OpenAQ, Open-Meteo
+weather data, and NASA FIRMS fire data) remains under the terms of its original
+providers and is not covered by this notice.
+
+To ask for permission, contact Anushka Joshi through GitHub:
+https://github.com/Anushkajoshii
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+IMPLIED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY ARISING FROM THE SOFTWARE OR ITS USE.

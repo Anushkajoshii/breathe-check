@@ -1,12 +1,6 @@
 import type { CityEntry } from "../data";
 import { CityPicker } from "./CityPicker";
-import { IconBook, IconCode, IconDatabase, LogoMark } from "./Icons";
-
-export const LINKS = {
-  report: "https://anushkajoshii.github.io/breathe-check/",
-  data: "https://huggingface.co/datasets/Anushkajoshii/breathe-check-data",
-  code: "https://github.com/Anushkajoshii/breathe-check",
-};
+import { IconBook, IconCalendar, IconChart, LogoMark } from "./Icons";
 
 export function Header({
   cities,
@@ -27,15 +21,15 @@ export function Header({
             <span className="brand-sub">Cleaner air, better timing</span>
           </span>
         </a>
-        <nav className="top-nav" aria-label="More from Breathe Check">
-          <a href={LINKS.report}>
-            <IconBook size={16} /> Findings
+        <nav className="top-nav" aria-label="On this page">
+          <a href="#forecast">
+            <IconChart size={16} /> Forecast
           </a>
-          <a href={LINKS.data}>
-            <IconDatabase size={16} /> Data
+          <a href="#calendar">
+            <IconCalendar size={16} /> Calendar
           </a>
-          <a href={LINKS.code}>
-            <IconCode size={16} /> Code
+          <a href="#how">
+            <IconBook size={16} /> How it works
           </a>
         </nav>
       </div>
