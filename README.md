@@ -2,7 +2,11 @@
 
 **Honest answers about India's air, from public data.**
 
-**[Open the app](https://breathecheck-aj.vercel.app)** · **[Read the report](https://anushkajoshii.github.io/breathe-check/)** · **[Get the data](https://huggingface.co/datasets/Anushkajoshii/breathe-check-data)**
+[![CI](https://github.com/Anushkajoshii/breathe-check/actions/workflows/ci.yml/badge.svg)](https://github.com/Anushkajoshii/breathe-check/actions/workflows/ci.yml)
+[![Daily update](https://github.com/Anushkajoshii/breathe-check/actions/workflows/daily.yml/badge.svg)](https://github.com/Anushkajoshii/breathe-check/actions/workflows/daily.yml)
+[![Report site](https://github.com/Anushkajoshii/breathe-check/actions/workflows/site.yml/badge.svg)](https://anushkajoshii.github.io/breathe-check/)
+
+**[Live app](https://breathecheck-aj.vercel.app)** · **[Full report](https://anushkajoshii.github.io/breathe-check/)** · **[Dataset](https://huggingface.co/datasets/Anushkajoshii/breathe-check-data)** · **[Design decisions](docs/adr)**
 
 Three questions, answered with government air-quality readings, weather records and satellite fire counts for 20 Indian cities:
 
@@ -11,6 +15,22 @@ Three questions, answered with government air-quality readings, weather records 
 3. **When is the safest time to run outside tomorrow?**
 
 ![The app: tomorrow's best time to be outside, hour by hour](reports/demo.gif)
+
+## For recruiters: what this project shows
+
+An end-to-end data product, built solo: from messy government sensor data to a causal analysis, a calibrated forecast, and an app people use every evening. Everything below runs live and is tested.
+
+| Skill | Where to see it |
+|---|---|
+| **Data engineering** | Three public APIs with rate limits, retries and resumable backfills ([`sources/`](src/breathe_check/sources)); a nearly 1-million-row hourly dataset as Parquet on Hugging Face; a self-healing daily pipeline ([`daily.py`](src/breathe_check/daily.py)) |
+| **Data quality** | dbt + DuckDB cleaning rules, each tested on planted bad data ([`transform/`](transform), [rules](docs/cleaning-rules.md)); found a 3-year hole in the public record and sensors faking clean air |
+| **Machine learning** | LightGBM weather models tested on unseen seasons (R² 0.80 for Delhi) with SHAP explanations; quantile forecasts calibrated to an honest 80% range ([forecast](reports/05-run-window.md)) |
+| **Causal inference** | Difference-in-differences event study, placebo tests and synthetic control to separate a policy effect from weather and regression to the mean ([GRAP](reports/03-did-grap-work.md)) |
+| **MLOps and automation** | GitHub Actions: CI on every PR, a nightly fetch → clean → forecast → publish job with failure handling and a public status file ([ADR-004](docs/adr/004-daily-update-on-github-actions.md)) |
+| **Product and frontend** | React + TypeScript app on Vercel with a hand-built accessible SVG chart, light and dark themes, and calendar feeds for Google, Outlook and Apple ([`web/`](web)) |
+| **Communication** | Five plain-language reports, six decision records, and a published report site ([site](https://anushkajoshii.github.io/breathe-check/)) |
+
+**Numbers worth asking about:** 225 stations · 20 cities · 1.2M readings cleaned · 121 Python + 13 web tests · forecast miss of 12 µg/m³ per hour · an 80% range that holds 80% of the time · ₹0 running cost.
 
 ## What we found
 
@@ -93,7 +113,7 @@ You can skip collecting data and use the public dataset: `uv run python -m breat
 
 ## Quality checks
 
-- **120 Python tests and 10 web tests run on every pull request.** Many of them run the real code on made-up data with a known answer. For example:
+- **121 Python tests and 13 web tests run on every pull request.** Many of them run the real code on made-up data with a known answer. For example:
   - cleaning rules that must catch exactly the bad readings planted in fake data
   - a hidden 30% "policy" cut the weather-adjusted series has to find
   - a regional bad spell that must fool the naive GRAP estimate but not the comparison
@@ -111,8 +131,12 @@ You can skip collecting data and use the public dataset: `uv run python -m breat
 - **Cigarettes:** the comparison is Berkeley Earth's rough rule of thumb (22 µg/m³ for a day ≈ 1 cigarette), not a medical measure.
 - **Not medical advice.** If you have asthma or a heart condition, follow your doctor.
 
-## Licence and data
+## Licence
 
-The code is MIT licensed. The data belongs to its sources, under their own terms: CPCB and state pollution control boards (via OpenAQ), Open-Meteo (CC BY 4.0, from Copernicus ERA5), and NASA FIRMS. See the [data card](docs/data-card.md).
+© 2026 Anushka Joshi. All rights reserved. The code is public so it can be read and reviewed; it isn't open source. Copying, reusing or redistributing any part of it, including the analysis, charts and models, needs written permission. See [LICENSE](LICENSE).
 
-Built by **Anushka Joshi**.
+The underlying data keeps its providers' terms: CPCB and state pollution control boards (via OpenAQ), Open-Meteo (CC BY 4.0, from Copernicus ERA5), and NASA FIRMS. See the [data card](docs/data-card.md).
+
+## About
+
+Built by **Anushka Joshi** · [GitHub](https://github.com/Anushkajoshii)
