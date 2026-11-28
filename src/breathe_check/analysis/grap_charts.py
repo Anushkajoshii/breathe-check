@@ -52,7 +52,8 @@ def plot_three_steps(on: list, off: list):
     ax.set_xlabel("Change in PM2.5, week after vs week before (%). Lines show the 90% range.")
     ax.legend(loc="lower right", fontsize=9)
     ax.set_title(
-        "Once weather and the region are accounted for, the 'effect' mostly vanishes", pad=22
+        "Raw numbers swing hard around each order; with weather and region out, little is left",
+        pad=22,
     )
     style.subtitle(
         ax,
