@@ -36,7 +36,11 @@ def test_india_time_is_written_as_utc():
     e = cf.event_for(forecast())
     assert e["start_utc"] == "20261129T063000Z"  # noon in India = 06:30 UTC
     assert e["end_utc"] == "20261129T083000Z"
-    assert e["title"].startswith("Best time to be outside: noon to 2 pm (Good")
+    assert e["title"] == "Indore: best time to run or go out"
+    assert e["description"].startswith(
+        "Noon to 2 pm on Sunday 29 November is the cleanest window in Indore."
+    )
+    assert "Air quality: Good, PM2.5 about 28" in e["description"]
 
 
 def test_no_best_window_means_no_event():
@@ -84,9 +88,30 @@ def test_history_keeps_14_days_and_replaces_same_day(tmp_path):
     )  # a newer forecast for the same day
     history = json.loads((tmp_path / "indore.json").read_text())
     assert [e["date"] for e in history] == ["2026-11-28", "2026-11-29"]  # 1 Nov is too old
-    assert "3 pm to 5 pm" in history[-1]["title"]
+    assert history[-1]["description"].startswith("3 pm to 5 pm")
 
 
 @pytest.mark.parametrize(("h", "label"), [(0, "midnight"), (12, "noon"), (7, "7 am"), (16, "4 pm")])
 def test_hour_labels(h, label):
     assert cf.hour_label(h) == label
+
+
+def test_events_from_older_versions_get_the_new_title_and_address(tmp_path):
+    old = [
+        {
+            "uid": "u",
+            "date": "2026-11-28",
+            "start_utc": "20261128T063000Z",
+            "end_utc": "20261128T083000Z",
+            "title": "Best time to be outside: noon to 2 pm (Good, about 28 µg/m³)",
+            "description": "Hour by hour: https://breathe-check-flax.vercel.app/?city=indore",
+            "url": "https://breathe-check-flax.vercel.app/?city=indore",
+        }
+    ]
+    (tmp_path / "indore.json").write_text(json.dumps(old))
+    cf.update_city(forecast("2026-11-29"), NOW, tmp_path)
+    history = json.loads((tmp_path / "indore.json").read_text())
+    first = history[0]
+    assert first["title"] == "Indore: best time to run or go out"
+    assert first["url"] == "https://breathecheck-aj.vercel.app/?city=indore"
+    assert "breathe-check-flax" not in (tmp_path / "indore.ics").read_text()
