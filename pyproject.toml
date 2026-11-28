@@ -3,7 +3,7 @@ name = "breathe-check"
 version = "0.1.0"
 description = "Did Delhi's pollution rules work, or was it the weather? Is Indore's air as clean as its streets? When is it safest to run outside tomorrow?"
 readme = "README.md"
-license = { text = "MIT" }
+license = { text = "Proprietary. Copyright (c) 2026 Anushka Joshi. All rights reserved. See LICENSE." }
 authors = [{ name = "Anushka Joshi" }]
 requires-python = ">=3.11"
 dependencies = [

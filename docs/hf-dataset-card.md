@@ -1,5 +1,7 @@
 ---
-license: cc-by-4.0
+license: other
+license_name: all-rights-reserved
+license_link: https://github.com/Anushkajoshii/breathe-check/blob/main/LICENSE
 pretty_name: Breathe Check - India air quality, weather and crop fires
 language:
   - en
@@ -56,5 +58,9 @@ GROUP BY ALL ORDER BY month;
 - OpenAQ has almost no CPCB data from November 2022 to February 2025.
 - Files in `raw/` are untouched readings. Files in `clean/` leave out readings that break the [cleaning rules](https://github.com/Anushkajoshii/breathe-check/blob/main/docs/cleaning-rules.md).
 - Each source keeps its own licence: CPCB (Government of India) via OpenAQ, Open-Meteo (CC BY 4.0), NASA FIRMS. Please credit them.
+
+## Use of this dataset
+
+The cleaned tables, weather-adjusted series, forecasts and calendar feeds are © 2026 Anushka Joshi. All rights reserved. They're public so the Breathe Check app and its calendars can read them. Reusing or redistributing them needs written permission. The underlying raw readings keep their original providers' terms.
 
 Full details: [data card](https://github.com/Anushkajoshii/breathe-check/blob/main/docs/data-card.md).
