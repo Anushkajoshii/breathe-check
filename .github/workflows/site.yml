@@ -1,0 +1,50 @@
+name: Report site
+
+# Builds the report website (MkDocs) and publishes it to GitHub Pages whenever the
+# write-ups, docs or charts change on main. No gh-pages branch, no commits.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "reports/**"
+      - "docs/**"
+      - "reference/README.md"
+      - "tools/build_site.py"
+      - "tools/site_home.md"
+      - "mkdocs.yml"
+      - "web/public/icon.svg"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      NO_MKDOCS_2_WARNING: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+      - run: uv sync --group site
+      - name: Build (fails on any broken link)
+        run: uv run --group site python tools/build_site.py
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site_build
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,4 +1,4 @@
-.PHONY: setup test lint format clean stations backfill daily daily-local upload clean-data docs-data figures models grap indore forecast run-window
+.PHONY: setup test lint format clean stations backfill daily daily-local upload clean-data docs-data figures models grap indore forecast run-window site site-serve
 
 setup:        ## install everything and turn on pre-commit
 	uv sync
@@ -64,3 +64,9 @@ forecast:     ## make tomorrow's run-window forecast for every city (data/public
 
 run-window:   ## test the run-window forecast on recent months and draw its charts
 	uv run python analysis/run_window.py
+
+site:         ## build the report website into site_build/ (fails on broken links)
+	uv run --group site python tools/build_site.py
+
+site-serve:   ## preview the report website at http://127.0.0.1:8000
+	uv run --group site python tools/build_site.py --serve
