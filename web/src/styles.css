@@ -274,8 +274,7 @@ strong { font-weight: 650; }
   background: var(--brand-soft); color: var(--brand); margin-bottom: 10px;
 }
 .step p, .finding p { font-size: 0.92rem; margin-bottom: 0; }
-.finding { display: flex; flex-direction: column; gap: 6px; text-decoration: none; color: var(--text); transition: transform 0.12s, border-color 0.12s; }
-.finding:hover { transform: translateY(-2px); border-color: var(--brand); }
+.finding { display: flex; flex-direction: column; gap: 6px; color: var(--text); }
 .read-more { margin-top: auto; padding-top: 8px; display: inline-flex; align-items: center; gap: 6px; color: var(--brand); font-weight: 650; font-size: 0.9rem; }
 
 /* ---------- Loading and errors ---------- */
@@ -284,7 +283,7 @@ strong { font-weight: 650; }
   background-size: 200% 100%; animation: shimmer 1.3s infinite linear;
 }
 @keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
-@media (prefers-reduced-motion: reduce) { .skeleton { animation: none; } .finding:hover { transform: none; } }
+@media (prefers-reduced-motion: reduce) { .skeleton { animation: none; } html { scroll-behavior: auto; } }
 .error { border-color: var(--critical); }
 
 /* ---------- Footer ---------- */
@@ -299,3 +298,7 @@ strong { font-weight: 650; }
 .footer-head { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0 0 6px; }
 .site-footer ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; font-size: 0.92rem; }
 .copyright { margin-top: 24px; font-size: 0.85rem; color: var(--muted); }
+
+/* in-page links land a little below the top edge */
+html { scroll-behavior: smooth; }
+.anchor { position: relative; top: -12px; }

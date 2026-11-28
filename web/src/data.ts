@@ -1,9 +1,9 @@
-// Where the app gets its numbers: small JSON files the daily job uploads to the
-// public Hugging Face dataset every evening at 7 pm India time.
+// Where the app gets its numbers: small JSON files the daily job publishes every
+// evening at 7 pm India time.
 
-export const DATA_BASE =
-  import.meta.env.VITE_DATA_BASE ??
-  "https://huggingface.co/datasets/Anushkajoshii/breathe-check-data/resolve/main/public";
+// Served through the app's own address (/data/...), which passes the files through
+// from the dataset (see vercel.json, and vite.config.ts for local development).
+export const DATA_BASE = import.meta.env.VITE_DATA_BASE ?? "/data";
 
 export type Category = "Good" | "Satisfactory" | "Moderate" | "Poor" | "Very Poor" | "Severe";
 
