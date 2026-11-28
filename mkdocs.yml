@@ -1,0 +1,74 @@
+site_name: Breathe Check
+site_description: Honest answers about India's air, from public data. Did GRAP work? Is Indore's air clean? When is it safest to run tomorrow?
+site_author: Anushka Joshi
+site_url: https://anushkajoshii.github.io/breathe-check/
+repo_url: https://github.com/Anushkajoshii/breathe-check
+repo_name: Anushkajoshii/breathe-check
+edit_uri: ""
+docs_dir: .site_src
+site_dir: site_build
+copyright: Anushka Joshi · Code MIT · Data from CPCB (via OpenAQ), Open-Meteo and NASA FIRMS under their own terms
+
+theme:
+  name: material
+  logo: icon.svg
+  favicon: icon.svg
+  font: false
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  features:
+    - navigation.sections
+    - navigation.top
+    - navigation.footer
+    - search.suggest
+    - content.code.copy
+    - toc.follow
+
+markdown_extensions:
+  - tables
+  - admonition
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+nav:
+  - Home: index.md
+  - Findings:
+      - First look at the data: findings/01-first-look.md
+      - Taking the weather out: findings/02-weather-adjusted.md
+      - Did GRAP work?: findings/03-did-grap-work.md
+      - Is Indore's air clean?: findings/04-indore.md
+      - When to run tomorrow: findings/05-run-window.md
+  - How it's built:
+      - The data: about/data-card.md
+      - Cleaning rules: about/cleaning-rules.md
+      - GRAP and Diwali dates: about/reference-dates.md
+      - The daily update: about/daily-update.md
+      - The calendar: about/calendar.md
+      - Putting the app online: about/deploy-web.md
+      - Decisions:
+          - Free tools instead of AWS: about/adr/001-free-stack-instead-of-aws.md
+          - Data on Hugging Face: about/adr/002-hugging-face-for-data.md
+          - Cleaning with dbt and DuckDB: about/adr/003-dbt-and-duckdb-for-cleaning.md
+          - The daily update: about/adr/004-daily-update-on-github-actions.md
+          - A static web app: about/adr/005-static-web-app.md
+          - MkDocs for the report site: about/adr/006-report-site-with-mkdocs.md

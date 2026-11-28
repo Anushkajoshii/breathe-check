@@ -36,3 +36,7 @@ transform/dbt_packages/
 logs/
 transform/.user.yml
 data/public/
+
+# Report site build
+.site_src/
+site_build/
