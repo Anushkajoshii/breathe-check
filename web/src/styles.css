@@ -180,8 +180,10 @@ strong { font-weight: 650; }
 }
 .tile-icon { grid-row: span 2; color: var(--brand); align-self: center; }
 .tile-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
-.tile-value { font-size: 0.95rem; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; }
+/* inline, so punctuation sits right after the number; the badge keeps its own spacing */
+.tile-value { font-size: 0.95rem; display: block; line-height: 1.7; }
 .tile-value strong { font-size: 1.15rem; }
+.tile-value .badge { margin-left: 4px; }
 
 /* ---------- Badges ---------- */
 .badge {
