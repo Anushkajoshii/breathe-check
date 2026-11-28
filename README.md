@@ -139,4 +139,4 @@ The underlying data keeps its providers' terms: CPCB and state pollution control
 
 ## About
 
-Built by **Anushka Joshi** · [GitHub](https://github.com/Anushkajoshii)
+Built by **Anushka Joshi**.
