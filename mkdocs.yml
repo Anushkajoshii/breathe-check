@@ -7,7 +7,7 @@ repo_name: Anushkajoshii/breathe-check
 edit_uri: ""
 docs_dir: .site_src
 site_dir: site_build
-copyright: Anushka Joshi · Code MIT · Data from CPCB (via OpenAQ), Open-Meteo and NASA FIRMS under their own terms
+copyright: © 2026 Anushka Joshi · Code under the MIT licence · Data from CPCB (via OpenAQ), Open-Meteo and NASA FIRMS under their own terms
 
 theme:
   name: material
