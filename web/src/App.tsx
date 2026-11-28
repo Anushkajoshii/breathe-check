@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
+import { About } from "./components/About";
 import { BestTime } from "./components/BestTime";
 import { CalendarCard } from "./components/CalendarCard";
-import { CityPicker } from "./components/CityPicker";
+import { Footer } from "./components/Footer";
+import { Header } from "./components/Header";
 import { HourlyChart } from "./components/HourlyChart";
 import { LastDay } from "./components/LastDay";
 import { Smoke } from "./components/Smoke";
 import { type Forecast, type Index, type Status, loadForecast, loadIndex, loadStatus } from "./data";
-import { ago } from "./format";
 
 const STORE_KEY = "breathe-check-city";
 
@@ -29,6 +30,16 @@ function rememberCity(slug: string) {
   const url = new URL(window.location.href);
   url.searchParams.set("city", slug);
   window.history.replaceState(null, "", url);
+}
+
+function Skeleton() {
+  return (
+    <div aria-busy="true" aria-label="Loading tomorrow's forecast">
+      <div className="card skeleton" style={{ height: 300 }} />
+      <div className="card skeleton" style={{ height: 320 }} />
+      <p className="muted small center">Loading tomorrow's forecast…</p>
+    </div>
+  );
 }
 
 export default function App() {
@@ -69,13 +80,7 @@ export default function App() {
 
   return (
     <div className="page">
-      <header className="top">
-        <div>
-          <h1>Breathe Check</h1>
-          <p className="muted">When is it safest to run outside tomorrow?</p>
-        </div>
-        {index && city && <CityPicker cities={index.cities} value={city} onChange={choose} />}
-      </header>
+      <Header cities={index?.cities ?? null} city={city} onCity={choose} />
 
       <main>
         {error && (
@@ -83,10 +88,10 @@ export default function App() {
             <p>
               <strong>Couldn't load the forecast.</strong> {error}
             </p>
-            <p className="muted small">Check your connection and reload. The forecast is made every evening at 7 pm.</p>
+            <p className="muted small">Check your connection and reload. New forecasts arrive every evening at 7 pm.</p>
           </section>
         )}
-        {!error && !forecast && <p className="muted loading">Loading tomorrow's forecast…</p>}
+        {!error && !forecast && <Skeleton />}
         {forecast && (
           <>
             <BestTime f={forecast} />
@@ -102,25 +107,10 @@ export default function App() {
             <CalendarCard city={forecast.city} name={forecast.name} />
           </>
         )}
+        <About />
       </main>
 
-      <footer className="foot muted small">
-        {forecast && (
-          <p>
-            Forecast made {ago(forecast.made_at)}
-            {status && !status.ok && " (some data sources were late today; numbers may be a day older than usual)"}.
-            Updated every evening at 7 pm India time.
-          </p>
-        )}
-        <p>
-          PM2.5 from government (CPCB) stations via OpenAQ, weather from Open-Meteo, fires from NASA FIRMS. Not
-          medical advice: if you have asthma or a heart condition, follow your doctor.
-        </p>
-        <p>
-          <a href="https://github.com/Anushkajoshii/breathe-check">How this works</a> ·{" "}
-          <a href="https://huggingface.co/datasets/Anushkajoshii/breathe-check-data">The data</a>
-        </p>
-      </footer>
+      <Footer forecast={forecast} status={status} />
     </div>
   );
 }

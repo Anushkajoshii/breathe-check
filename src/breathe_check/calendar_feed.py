@@ -19,7 +19,8 @@ from pathlib import Path
 from breathe_check import settings
 from breathe_check.standards import PM25_PER_CIGARETTE
 
-APP_URL = "https://breathe-check-flax.vercel.app"
+APP_URL = "https://breathecheck-aj.vercel.app"
+OLD_APP_URLS = ("https://breathe-check-flax.vercel.app",)
 FORECASTS = settings.DATA_DIR / "public" / "forecast"
 CALENDARS = settings.DATA_DIR / "public" / "calendar"
 KEEP_DAYS = 14
@@ -45,13 +46,13 @@ def event_for(forecast: dict) -> dict | None:
     end_ist = datetime.fromisoformat(f"{day}T00:00:00") + timedelta(hours=best["end"])
     pm = best["pm25"]
     cigs = pm * (best["end"] - best["start"]) / 24 / PM25_PER_CIGARETTE
-    title = (
-        f"Best time to be outside: {hour_label(best['start'])} to {hour_label(best['end'])} "
-        f"({best['category']}, about {round(pm)} µg/m³)"
-    )
+    window = f"{hour_label(best['start'])} to {hour_label(best['end'])}"
+    # The title is what people see first in their calendar: the city, then the task.
+    title = f"{forecast['name']}: best time to run or go out"
+    when = datetime.fromisoformat(day).strftime("%A %d %B").replace(" 0", " ")
     lines = [
-        f"{forecast['name']}, {day}: the cleanest 2 hours tomorrow, by Breathe Check's forecast.",
-        f"PM2.5 about {round(pm)} µg/m³ ({best['category']}). {best['advice']}",
+        f"{window[0].upper()}{window[1:]} on {when} is the cleanest window in {forecast['name']}.",
+        f"Air quality: {best['category']}, PM2.5 about {round(pm)} µg/m³. {best['advice']}",
         f"Two hours outside at this level is like {cigs:.1f} of a cigarette "
         "(Berkeley Earth's rough rule of thumb, not a medical measure).",
     ]
@@ -133,12 +134,24 @@ def render(city_name: str, city: str, events: list[dict], now: datetime) -> str:
     return "\r\n".join(fold(line) for line in out) + "\r\n"
 
 
+def refresh_old(event: dict, city_name: str) -> dict:
+    """Bring events saved by earlier versions up to date: the newer title, and links
+    pointing at the app's current address."""
+    e = dict(event)
+    if e.get("title", "").startswith("Best time to be outside"):
+        e["title"] = f"{city_name}: best time to run or go out"
+    for old in OLD_APP_URLS:
+        e["description"] = e.get("description", "").replace(old, APP_URL)
+        e["url"] = e.get("url", "").replace(old, APP_URL)
+    return e
+
+
 def update_city(forecast: dict, now: datetime, folder: Path = CALENDARS) -> Path:
     """Add tomorrow's event to a city's history, drop events older than 14 days, write the feed."""
     folder.mkdir(parents=True, exist_ok=True)
     history_path = folder / f"{forecast['city']}.json"
     history = json.loads(history_path.read_text()) if history_path.exists() else []
-    by_date = {e["date"]: e for e in history}
+    by_date = {e["date"]: refresh_old(e, forecast["name"]) for e in history}
     event = event_for(forecast)
     if event:
         by_date[event["date"]] = event  # a later forecast for the same day replaces the earlier one

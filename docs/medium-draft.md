@@ -71,7 +71,7 @@ The honest scorecard, from months the model never saw:
 
 And the honest caveat: **in winter, just going at 2 pm works as well as the forecast.** The afternoon sun reliably lifts the lid off the city. The forecast earns its keep the rest of the year, and by telling you *how* clean the window will be.
 
-You can see it at [breathe-check-flax.vercel.app](https://breathe-check-flax.vercel.app), or add your city's calendar feed and tomorrow's window shows up in Google Calendar, Outlook or Apple Calendar every evening.
+You can see it at [breathecheck-aj.vercel.app](https://breathecheck-aj.vercel.app), or add your city's calendar feed and tomorrow's window shows up in Google Calendar, Outlook or Apple Calendar every evening.
 
 ## Things that broke, and what I learned
 
@@ -85,7 +85,7 @@ Most of the work wasn't the model. It was data cleaning, honest testing, and mak
 
 Everything is free and public:
 
-- **App:** [breathe-check-flax.vercel.app](https://breathe-check-flax.vercel.app)
+- **App:** [breathecheck-aj.vercel.app](https://breathecheck-aj.vercel.app)
 - **Full write-up:** [anushkajoshii.github.io/breathe-check](https://anushkajoshii.github.io/breathe-check/)
 - **Code:** [github.com/Anushkajoshii/breathe-check](https://github.com/Anushkajoshii/breathe-check)
 - **Data:** [huggingface.co/datasets/Anushkajoshii/breathe-check-data](https://huggingface.co/datasets/Anushkajoshii/breathe-check-data)
