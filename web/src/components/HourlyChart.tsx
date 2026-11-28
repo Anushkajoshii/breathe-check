@@ -1,11 +1,16 @@
 import { useId, useMemo, useState } from "react";
 import type { Forecast, Hour } from "../data";
 import { hourLabel, INDIA_DAILY } from "../format";
+import { IconChart } from "./Icons";
 import { LevelBadge } from "./LevelBadge";
 
 const W = 640;
-const H = 260;
 const PAD = { top: 16, right: 16, bottom: 30, left: 40 };
+
+/** Taller on phones, where the chart is drawn narrow, so the hourly shape stays readable. */
+function chartHeight(): number {
+  return typeof window !== "undefined" && window.matchMedia?.("(max-width: 520px)").matches ? 420 : 260;
+}
 
 /**
  * Tomorrow hour by hour: the middle forecast as a line, the low-high range as a band,
@@ -16,6 +21,7 @@ export function HourlyChart({ f }: { f: Forecast }) {
   const hours = useMemo(() => [...f.hours].sort((a, b) => a.hour - b.hour), [f.hours]);
   const [active, setActive] = useState<Hour | null>(null);
   const titleId = useId();
+  const H = chartHeight();
 
   const yMax = Math.max(...hours.map((h) => h.high), INDIA_DAILY) * 1.1;
   const x = (h: number) => PAD.left + (h / 23) * (W - PAD.left - PAD.right);
@@ -32,10 +38,23 @@ export function HourlyChart({ f }: { f: Forecast }) {
 
   return (
     <section className="card" aria-labelledby={titleId}>
-      <h3 id={titleId}>Hour by hour</h3>
-      <p className="muted small">
-        Line: the middle forecast. Shaded band: where the real value should land 8 times out of 10.
-      </p>
+      <div className="card-head">
+        <span className="card-icon">
+          <IconChart />
+        </span>
+        <h3 id={titleId}>Tomorrow, hour by hour</h3>
+      </div>
+      <ul className="legend" aria-label="Chart key">
+        <li>
+          <span className="key key-line" /> Forecast
+        </li>
+        <li>
+          <span className="key key-band" /> Likely range (8 in 10)
+        </li>
+        <li>
+          <span className="key key-best" /> Best 2 hours
+        </li>
+      </ul>
       <div className="chart-wrap">
         <svg
           viewBox={`0 0 ${W} ${H}`}
@@ -47,9 +66,11 @@ export function HourlyChart({ f }: { f: Forecast }) {
           {ticks.map((t) => (
             <g key={t}>
               <line x1={PAD.left} x2={W - PAD.right} y1={y(t)} y2={y(t)} className="grid" />
-              <text x={PAD.left - 6} y={y(t)} className="axis" textAnchor="end" dominantBaseline="middle">
-                {t}
-              </text>
+              {t > 0 && (
+                <text x={PAD.left - 6} y={y(t)} className="axis" textAnchor="end" dominantBaseline="middle">
+                  {t}
+                </text>
+              )}
             </g>
           ))}
           {best && (
@@ -60,6 +81,11 @@ export function HourlyChart({ f }: { f: Forecast }) {
               height={H - PAD.top - PAD.bottom}
               className="best-zone"
             />
+          )}
+          {best && (
+            <text x={(x(best.start) + x(Math.min(best.end, 23))) / 2} y={PAD.top + 14} className="best-label" textAnchor="middle">
+              Best
+            </text>
           )}
           <line x1={PAD.left} x2={W - PAD.right} y1={y(INDIA_DAILY)} y2={y(INDIA_DAILY)} className="limit" />
           <text x={PAD.left + 4} y={y(INDIA_DAILY) - 5} className="axis" textAnchor="start">

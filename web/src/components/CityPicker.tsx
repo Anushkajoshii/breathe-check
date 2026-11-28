@@ -12,14 +12,16 @@ export function CityPicker({
   const sorted = [...cities].sort((a, b) => a.name.localeCompare(b.name));
   return (
     <label className="picker">
-      <span>City</span>
-      <select value={value} onChange={(e) => onChange(e.target.value)}>
-        {sorted.map((c) => (
-          <option key={c.city} value={c.city}>
-            {c.name}
-          </option>
-        ))}
-      </select>
+      <span className="picker-label">Your city</span>
+      <span className="select-wrap">
+        <select value={value} onChange={(e) => onChange(e.target.value)}>
+          {sorted.map((c) => (
+            <option key={c.city} value={c.city}>
+              {c.name}, {c.state}
+            </option>
+          ))}
+        </select>
+      </span>
     </label>
   );
 }
