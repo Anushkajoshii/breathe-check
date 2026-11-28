@@ -69,7 +69,8 @@ test("shows Indore's best time by default", async () => {
   mockFetch({ "forecast/index.json": index, "forecast/indore.json": indore, "status.json": status });
   render(<App />);
   expect(await screen.findByText("noon to 2 pm")).toBeInTheDocument();
-  expect(screen.getByText(/about 1.6 cigarettes/)).toBeInTheDocument();
+  // shown in the summary tile and in the last-24-hours card
+  expect(screen.getAllByText(/about 1.6 cigarettes/).length).toBeGreaterThan(0);
   expect(screen.queryByText(/Crop-fire smoke/)).not.toBeInTheDocument();
 });
 
@@ -109,4 +110,27 @@ test("the calendar card shows under the forecast", async () => {
     "href",
     expect.stringContaining("calendar.google.com"),
   );
+});
+
+test("Apple Calendar on a Mac shows the two-step help instead of a webcal link", async () => {
+  const { deviceKind } = await import("./components/CalendarCard");
+  const mac = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 Safari/605.1.15";
+  const iphone = "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 Safari/604.1";
+  expect(deviceKind(iphone, 5)).toBe("ios");
+  expect(deviceKind(mac, 5)).toBe("ios"); // an iPad asking for the desktop site
+  expect(deviceKind(mac, 0)).toBe("mac");
+  expect(deviceKind("Mozilla/5.0 (Windows NT 10.0)", 0)).toBe("other");
+
+  mockFetch({ "forecast/index.json": index, "forecast/indore.json": indore, "status.json": status });
+  window.prompt = vi.fn(); // the test browser has no clipboard, so copying falls back to this
+  render(<App />);
+  const apple = await screen.findByRole("button", { name: /Apple Calendar/ });
+  apple.click();
+  expect(await screen.findByText(/New Calendar Subscription/)).toBeInTheDocument();
+});
+
+test("the footer carries the copyright", async () => {
+  mockFetch({ "forecast/index.json": index, "forecast/indore.json": indore, "status.json": status });
+  render(<App />);
+  expect(await screen.findByText(/© \d{4} Anushka Joshi/)).toBeInTheDocument();
 });

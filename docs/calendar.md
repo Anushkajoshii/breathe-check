@@ -13,7 +13,7 @@ https://breathe-check-flax.vercel.app/calendar/<city>.ics
 For example, `indore.ics`, `delhi.ics` or `bengaluru.ics`. All 20 cities: ahmedabad, bengaluru, bhopal, chandigarh, chennai, delhi, faridabad, ghaziabad, gurugram, hyderabad, indore, jaipur, kanpur, kolkata, lucknow, mumbai, nagpur, noida, patna, pune.
 
 - **Google Calendar:** Other calendars → **+** → **From URL** → paste the link.
-- **Apple Calendar:** the app's **Apple Calendar** button opens the Calendar app on iPhone, and on Mac in Safari. Some browsers (like Chrome) don't pass these `webcal://` links on, so if nothing happens: File → **New Calendar Subscription** → paste the link. On iPhone: Settings → Calendar → Accounts → Add Account → Other → **Add Subscribed Calendar**. Set **Auto-refresh** to every hour.
+- **Apple Calendar:** on iPhone and iPad, the app's **Apple Calendar** button opens the Calendar app straight away. On a Mac, the button copies the link and shows two steps instead: Calendar → **File → New Calendar Subscription…** → paste → **Subscribe**, with Auto-refresh set to every hour. (A Mac hands `webcal://` links to whichever app registered for them, often Chrome, which can't use them, so the app doesn't rely on them there.) On iPhone without the app: Settings → Calendar → Accounts → Add Account → Other → **Add Subscribed Calendar**.
 - **Outlook:** the app's **Outlook** button opens Outlook's "subscribe from web" page with the link filled in. Or: Add calendar → **Subscribe from web** → paste the link.
 
 ## What an event looks like
