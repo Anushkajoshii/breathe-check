@@ -4,10 +4,10 @@ Add one link to your calendar, once. Every evening, tomorrow's best 2 hours to b
 
 ## Add it
 
-Open the app at **https://breathe-check-flax.vercel.app**, choose your city, and use **Get it in your calendar**. Or add the link yourself:
+Open the app at **https://breathecheck-aj.vercel.app**, choose your city, and use **Get it in your calendar**. Or add the link yourself:
 
 ```
-https://breathe-check-flax.vercel.app/calendar/<city>.ics
+https://breathecheck-aj.vercel.app/calendar/<city>.ics
 ```
 
 For example, `indore.ics`, `delhi.ics` or `bengaluru.ics`. All 20 cities: ahmedabad, bengaluru, bhopal, chandigarh, chennai, delhi, faridabad, ghaziabad, gurugram, hyderabad, indore, jaipur, kanpur, kolkata, lucknow, mumbai, nagpur, noida, patna, pune.
@@ -18,12 +18,12 @@ For example, `indore.ics`, `delhi.ics` or `bengaluru.ics`. All 20 cities: ahmeda
 
 ## What an event looks like
 
-> **Best time to be outside: noon to 2 pm (Good, about 28 µg/m³)**
-> Indore, 2026-11-29: the cleanest 2 hours tomorrow, by Breathe Check's forecast.
-> PM2.5 about 28 µg/m³ (Good). Great day to be outside.
+> **Indore: best time to run or go out** (noon to 2 pm)
+> Noon to 2 pm on Sunday 29 November is the cleanest window in Indore.
+> Air quality: Good, PM2.5 about 28 µg/m³. Great day to be outside.
 > Two hours outside at this level is like 0.1 of a cigarette (Berkeley Earth's rough rule of thumb, not a medical measure).
 > Worst hour: around 11 pm, about 52 µg/m³.
-> Hour by hour: https://breathe-check-flax.vercel.app/?city=indore
+> Hour by hour: https://breathecheck-aj.vercel.app/?city=indore
 
 - **Events don't mark you as busy.**
 - **Delhi-NCR cities** add a line when crop-fire smoke is likely.
@@ -40,3 +40,7 @@ For example, `indore.ics`, `delhi.ics` or `bengaluru.ics`. All 20 cities: ahmeda
 
 - **Google Calendar refreshes subscriptions only every few hours,** sometimes up to a day. Apple Calendar lets you choose. If tomorrow's event hasn't appeared yet, the app always has the latest.
 - **The window is a forecast,** with the same limits as the app: see [the run-window report](../reports/05-run-window.md).
+
+## The app's address changed
+
+The app moved from `breathe-check-flax.vercel.app` to **breathecheck-aj.vercel.app** in November 2026. Feeds and links now use the new address, and events already in your calendar pick up the new link at the next refresh. If you subscribed with the old address, it keeps working only while the old address still points at the app. Re-subscribing with the new link is the safe choice.

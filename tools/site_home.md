@@ -8,7 +8,7 @@ Three questions, answered with government air-quality readings, weather records 
 2. **Indore keeps winning "India's cleanest city". Is its air clean too?**
 3. **When is the safest time to run outside tomorrow?**
 
-[Open the app](https://breathe-check-flax.vercel.app){ .md-button .md-button--primary } [Add the run-window calendar](about/calendar.md){ .md-button } [Get the data](https://huggingface.co/datasets/Anushkajoshii/breathe-check-data){ .md-button }
+[Open the app](https://breathecheck-aj.vercel.app){ .md-button .md-button--primary } [Add the run-window calendar](about/calendar.md){ .md-button } [Get the data](https://huggingface.co/datasets/Anushkajoshii/breathe-check-data){ .md-button }
 
 ## The short answers
 

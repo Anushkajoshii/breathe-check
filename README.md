@@ -2,7 +2,7 @@
 
 **Honest answers about India's air, from public data.**
 
-**[Open the app](https://breathe-check-flax.vercel.app)** · **[Read the report](https://anushkajoshii.github.io/breathe-check/)** · **[Get the data](https://huggingface.co/datasets/Anushkajoshii/breathe-check-data)**
+**[Open the app](https://breathecheck-aj.vercel.app)** · **[Read the report](https://anushkajoshii.github.io/breathe-check/)** · **[Get the data](https://huggingface.co/datasets/Anushkajoshii/breathe-check-data)**
 
 Three questions, answered with government air-quality readings, weather records and satellite fire counts for 20 Indian cities:
 
@@ -29,8 +29,8 @@ Along the way:
 
 ## What you can use
 
-- **[The app](https://breathe-check-flax.vercel.app):** for each of 20 cities, tomorrow's best 2 hours to be outside, an hour-by-hour forecast with a range, the last 24 hours as cigarettes, and a crop-fire smoke check for Delhi-NCR.
-- **[The calendar](docs/calendar.md):** add one link to Google Calendar, Outlook or Apple Calendar, and tomorrow's best window appears in your calendar every evening. For example: `https://breathe-check-flax.vercel.app/calendar/indore.ics`
+- **[The app](https://breathecheck-aj.vercel.app):** for each of 20 cities, tomorrow's best 2 hours to be outside, an hour-by-hour forecast with a range, the last 24 hours as cigarettes, and a crop-fire smoke check for Delhi-NCR.
+- **[The calendar](docs/calendar.md):** add one link to Google Calendar, Outlook or Apple Calendar, and tomorrow's best window appears in your calendar every evening. For example: `https://breathecheck-aj.vercel.app/calendar/indore.ics`
 - **[The report site](https://anushkajoshii.github.io/breathe-check/):** all five write-ups, the methods and every chart.
 - **[The dataset](https://huggingface.co/datasets/Anushkajoshii/breathe-check-data):** raw and cleaned PM2.5, weather and fires since 2018, plus the daily forecasts, as Parquet and JSON. Updated every evening.
 
