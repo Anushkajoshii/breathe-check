@@ -2,53 +2,70 @@
 
 **Honest answers about India's air, from public data.**
 
-Breathe Check answers three questions that matter to people who live in Indian cities:
+**[Open the app](https://breathe-check-flax.vercel.app)** · **[Read the report](https://anushkajoshii.github.io/breathe-check/)** · **[Get the data](https://huggingface.co/datasets/Anushkajoshii/breathe-check-data)**
+
+Three questions, answered with government air-quality readings, weather records and satellite fire counts for 20 Indian cities:
 
 1. **Did Delhi's GRAP pollution rules actually cut PM2.5, or did the weather do it?**
-   Air gets cleaner when the wind picks up or it rains, so a simple before/after hides the truth. We remove the weather effect first, then compare Delhi-NCR with similar cities that have no GRAP.
 2. **Indore keeps winning "India's cleanest city". Is its air clean too?**
-   Cleanliness rankings measure waste, not air. We compare Indore's PM2.5 with India's limits, the WHO guideline and similar cities, season by season.
 3. **When is the safest time to run outside tomorrow?**
-   A next-24-hour forecast for your city, with a range showing how sure it is, and the best 2-hour window to go out.
 
-Extras:
+![The app: tomorrow's best time to be outside, hour by hour](reports/demo.gif)
 
-- **Cigarette equivalent**: today's air turned into "like smoking N cigarettes", so the numbers mean something.
-- **Stubble-smoke check**: NASA fire counts in Punjab and Haryana plus wind direction answer "is crop-fire smoke blowing into Delhi today?"
-- **Run-window calendar**: add one link to Google or Apple Calendar, and every evening it puts tomorrow's best 2-hour run window in your calendar, with the AQI. No app, no sign-up, no messages. [How to add it](docs/calendar.md).
+## What we found
 
-**Live app: https://breathe-check-flax.vercel.app** · Data: [Hugging Face](https://huggingface.co/datasets/Anushkajoshii/breathe-check-data)
-
-## How it works (short version)
-
-| Step | What happens | Tool |
+| Question | Answer | Read more |
 |---|---|---|
-| Collect | Hourly PM2.5 from government (CPCB) stations, hourly weather, crop-fire counts | OpenAQ, Open-Meteo, NASA FIRMS |
-| Store | Daily Parquet files in a public dataset | Hugging Face Datasets |
-| Clean | Flag stuck sensors, zeros, impossible jumps and gaps; every rule is a tested check ([rules](docs/cleaning-rules.md)) | dbt + DuckDB |
-| Analyse | Remove the weather effect, then test whether GRAP worked | LightGBM, statsmodels, synthetic control |
-| Share | A full write-up with charts, a run-window web app, a calendar feed | Quarto on GitHub Pages, Vercel, iCalendar |
+| Did GRAP's strictest stages cut PM2.5 in their first week? | **We can't find a cut.** Raw numbers swing +37% after Stage III/IV starts and −31% after it ends, but that's the bad spells themselves. With weather taken out and Delhi-NCR compared with similar cities without GRAP, the change is **+8% (90% range −5% to +23%)**, the same as on random dates. Four events is weak evidence, but a large quick cut is hard to believe. | [Did GRAP work?](reports/03-did-grap-work.md) |
+| Is India's cleanest city's air clean? | **Cleanest of its neighbours, right at India's limit.** Indore averaged **41 µg/m³** (July 2025 to June 2026) against India's yearly limit of 40 and the WHO's 5: 8 times the WHO guideline, about 1.8 cigarettes a day. Judged against its weather, it's ordinary. | [Indore](reports/04-indore.md) |
+| When is it safest to run tomorrow? | **Usually early afternoon.** On months it never saw, the forecast missed by **12 µg/m³** an hour, beat simple rules of thumb, and its range held the real value **80%** of the time. Its best window was among the day's cleanest third on **63%** of days (always 2 pm: 48%). | [When to run](reports/05-run-window.md) |
 
-Everything runs on free tiers. No cloud bill. See [docs/adr](docs/adr) for why each choice was made.
+Along the way:
 
-## Results so far
+- **Weather alone moves Delhi's winter PM2.5 by about 40%.** A weather-only model predicts 80% of Delhi's day-to-day ups and downs on winters it never saw. [Taking the weather out](reports/02-weather-adjusted.md)
+- **Delhi in November and December** averages 213 µg/m³: more than 3.5 times India's daily limit. The day after Diwali is about twice the week before, in Delhi *and* Indore. [First look](reports/01-first-look.md)
+- **Broken sensors make cities look cleaner.** Offline stations sending zeros pulled Indore's average down from 41 to 37 until they were filtered out. [Cleaning rules](docs/cleaning-rules.md)
+- **The public record has a three-year hole:** almost no CPCB data on OpenAQ from November 2022 to February 2025. [Data card](docs/data-card.md)
 
-Every number here comes from code in this repo that anyone can re-run. Write-ups so far: [first look at the data](reports/01-first-look.md), [taking the weather out](reports/02-weather-adjusted.md) , [did GRAP work?](reports/03-did-grap-work.md) , [India's cleanest city: is its air clean?](reports/04-indore.md) and [when to run tomorrow](reports/05-run-window.md)
+## What you can use
 
-![Tomorrow's run window for Indore](reports/figures/16_indore_tomorrow.png)
+- **[The app](https://breathe-check-flax.vercel.app):** for each of 20 cities, tomorrow's best 2 hours to be outside, an hour-by-hour forecast with a range, the last 24 hours as cigarettes, and a crop-fire smoke check for Delhi-NCR.
+- **[The calendar](docs/calendar.md):** add one link to Google Calendar, Outlook or Apple Calendar, and tomorrow's best window appears in your calendar every evening. For example: `https://breathe-check-flax.vercel.app/calendar/indore.ics`
+- **[The report site](https://anushkajoshii.github.io/breathe-check/):** all five write-ups, the methods and every chart.
+- **[The dataset](https://huggingface.co/datasets/Anushkajoshii/breathe-check-data):** raw and cleaned PM2.5, weather and fires since 2018, plus the daily forecasts, as Parquet and JSON. Updated every evening.
 
-- **Delhi in November and December** averages 213 µg/m³ of PM2.5: more than 3.5 times India's daily limit, about 14 times the WHO guideline.
-- **Indore**, India's cleanest city by its waste ranking, averaged 41 µg/m³ in July 2025 to June 2026: the cleanest of its neighbours, but right at India's yearly limit (40) and 8 times the WHO guideline. Judged against its weather, it's ordinary.
-- **The day after Diwali** is about twice as polluted as the week before, in Delhi and in Indore.
-- **Afternoons are cleanest.** In winter, Delhi's air at 5 pm has about 40% less PM2.5 than at midnight.
-- **The run-window forecast** misses by about 12 µg/m³ an hour on months it never saw, beats simple rules of thumb, and its low-to-high range holds the real value 80% of the time. Its best window was among the day's cleanest third on 63% of days, against 48% for always running at 2 pm.
-- **Weather alone** moves Delhi's winter PM2.5 by about 40%. A weather-only model predicts 80% of Delhi's day-to-day ups and downs on winters it never saw.
-- **November 2025 was 48% dirtier than its weather explains.**
-- **Did GRAP's strictest stages cut PM2.5 in their first week? We can't find it.** Raw numbers swing +37% after the stages switch on and −31% after they switch off, but that's the bad spells themselves. With weather taken out and Delhi-NCR compared with similar cities that have no GRAP, the change is +8% (90% range −5% to +23%), no different from random dates. Only four events fall in the data, so this is weak evidence, but a large quick cut is hard to believe.
+## How it works
+
+```mermaid
+flowchart LR
+  A[CPCB stations<br/>via OpenAQ] --> D
+  B[Open-Meteo<br/>weather + forecast] --> D
+  C[NASA FIRMS<br/>crop fires] --> D
+  D[Daily job<br/>GitHub Actions, 7 pm IST] --> E[Clean<br/>dbt + DuckDB]
+  E --> F[Forecast<br/>LightGBM]
+  F --> G[(Hugging Face<br/>public dataset)]
+  G --> H[Web app<br/>Vercel]
+  G --> I[Calendar feeds]
+  E --> J[Analysis<br/>weather-adjusted,<br/>GRAP, Indore]
+  J --> K[Report site<br/>GitHub Pages]
+```
+
+| Part | What it does | Built with |
+|---|---|---|
+| Collect | Hourly and daily PM2.5 from 225 government stations, hourly weather and forecasts, satellite fire detections | OpenAQ, Open-Meteo, NASA FIRMS, httpx |
+| Store | Parquet files, one per place per year, in a public dataset | Hugging Face Datasets |
+| Clean | One tested rule per problem: impossible values, missing hours, stuck sensors, repeats, outliers, spikes | dbt + DuckDB |
+| Take the weather out | A weather-only model per city, tested on seasons it never saw, explained with SHAP | LightGBM |
+| Judge GRAP | Event study vs comparison cities, placebo dates, synthetic control | pandas, NumPy, SciPy |
+| Forecast | Low, middle and high PM2.5 for every hour of tomorrow, with a calibrated range | LightGBM quantile regression |
+| Update | Every evening: fetch, clean, forecast, calendar, upload, `status.json` | GitHub Actions |
+| Share | Web app, calendar feeds, report site | React + Vite, iCalendar, MkDocs Material |
+
+Everything runs on free tiers, with no server and no cloud bill. Each big choice has a short decision record in [docs/adr](docs/adr).
 
 ## Run it yourself
 
-You need [uv](https://docs.astral.sh/uv/) and Python 3.11 or newer.
+You need [uv](https://docs.astral.sh/uv/) (Python 3.12) and, for the app, Node 22.
 
 ```bash
 git clone https://github.com/Anushkajoshii/breathe-check.git
@@ -57,38 +74,45 @@ make setup
 make test
 ```
 
-Copy `.env.example` to `.env` and add your free API keys (the file says where to get each one). Then collect the data:
+You can skip collecting data and use the public dataset: `uv run python -m breathe_check.ingest pull` downloads it. To collect it yourself, copy `.env.example` to `.env`, add the free keys it lists, and run:
 
-```bash
-make stations      # find government PM2.5 stations near each city
-make backfill      # full history (about an hour, because of API limits)
-make daily         # just the last week; this is what the daily job runs
-make clean-data    # run the cleaning rules and build the analysis tables
-```
+| Command | What it does |
+|---|---|
+| `make stations` | find government PM2.5 stations near each city |
+| `make backfill` | download the full history (about an hour, because of API limits) |
+| `make clean-data` | run the cleaning rules and build the analysis tables |
+| `make figures` | first-look charts |
+| `make models` | weather-adjusted PM2.5 |
+| `make grap` | did GRAP work? |
+| `make indore` | Indore vs limits and its neighbours |
+| `make run-window` | test the run-window forecast |
+| `make forecast` | make tomorrow's forecasts |
+| `make daily-local` | the whole daily update on your machine, without uploading |
+| `make site-serve` | preview the report site |
+| `cd web && npm install && npm run dev` | run the app at http://localhost:5173 |
 
-You can also skip collecting and read the public dataset on Hugging Face directly.
+## Quality checks
 
-## The app
+- **120 Python tests and 10 web tests run on every pull request.** Many of them run the real code on made-up data with a known answer. For example:
+  - cleaning rules that must catch exactly the bad readings planted in fake data
+  - a hidden 30% "policy" cut the weather-adjusted series has to find
+  - a regional bad spell that must fool the naive GRAP estimate but not the comparison
+- **dbt data tests run on the real data:** unique rows, GRAP only in Delhi-NCR, no impossible values after cleaning, a full day of weather behind every reading.
+- **The daily job records what worked** in a public [`status.json`](https://huggingface.co/datasets/Anushkajoshii/breathe-check-data/blob/main/public/status.json) and keeps going if one data source is down.
+- **The report site build fails on any broken link.**
 
-A small web page that answers one question for 20 Indian cities: **when is it safest to be outside tomorrow?** It shows the best 2-hour window, an hour-by-hour forecast with a range, the last 24 hours as cigarettes, and, for Delhi-NCR, whether crop-fire smoke is likely. It reads the forecasts the daily job uploads, so it's always fresh.
+## Limits
 
-- Live: **https://breathe-check-flax.vercel.app**
-- Calendar feed for any city: `https://breathe-check-flax.vercel.app/calendar/<city>.ics` ([how to add it](docs/calendar.md))
-- Code: [`web/`](web) (React, Vite, TypeScript). Run it locally with `cd web && npm install && npm run dev`.
-- Putting it online: [docs/deploy-web.md](docs/deploy-web.md).
+- **Missing winters:** OpenAQ has almost no CPCB data from November 2022 to February 2025, so three winters are missing, and the station network changed between the two periods.
+- **Thin GRAP evidence:** only four strict-stage events fall inside the data. The GRAP result is weak evidence, and it says nothing about slower, season-long effects.
+- **Uneven stations:** some cities have one or two stations, so a single bad sensor can matter. Indore had one station, in an industrial area, before 2025.
+- **PM2.5 only:** India's official AQI also uses PM10, NO2, ozone and more. Ozone, which peaks on sunny afternoons, isn't in the run window.
+- **Forecast testing:** the forecast was tested with real past weather, not past weather forecasts, so real misses will be somewhat bigger.
+- **Cigarettes:** the comparison is Berkeley Earth's rough rule of thumb (22 µg/m³ for a day ≈ 1 cigarette), not a medical measure.
+- **Not medical advice.** If you have asthma or a heart condition, follow your doctor.
 
-## How it stays fresh
+## Licence and data
 
-Every evening at 7 pm India time, a GitHub Actions job fetches the last week of data, cleans it, makes tomorrow's forecasts and uploads them to Hugging Face. It needs no server and costs nothing. See [the daily update](docs/daily-update.md).
+The code is MIT licensed. The data belongs to its sources, under their own terms: CPCB and state pollution control boards (via OpenAQ), Open-Meteo (CC BY 4.0, from Copernicus ERA5), and NASA FIRMS. See the [data card](docs/data-card.md).
 
-## Known limitations
-
-- Monitoring stations are not spread evenly. Some cities have one or two, so one bad sensor can skew a whole city.
-- OpenAQ republishes CPCB data. If CPCB data is late or missing, so is ours.
-- The cigarette comparison is a rough rule of thumb from Berkeley Earth, not a medical measure.
-- OpenAQ has almost no CPCB data from November 2022 to February 2025, so three winters are missing. See the [data card](docs/data-card.md).
-- This is not medical advice. If you have asthma or a heart condition, follow your doctor.
-
-## Licence
-
-MIT. Data comes from its original sources under their own terms, listed in the [data card](docs/data-card.md).
+Built by **Anushka Joshi**.
